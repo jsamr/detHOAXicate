@@ -9,4 +9,6 @@ app.listen(port, '0.0.0.0', function onStart (err) {
     console.log(err)
   }
   console.info('==> 🌎 Listening on port %s. Open up http://0.0.0.0:%s/ in your browser.', port, port)
-})
+}).on('error', (err) => console.error('unhandled error from express app', err))
+
+process.on('uncaughtException', (err) => console.error('Uncaught node process exception', err))
