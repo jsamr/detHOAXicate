@@ -36,6 +36,7 @@
     "font-awesome": "^4.6.3",
     "jsdom": "^9.4.2",
     "lodash": "^4.15.0",
+    "normalize.css": "^4.2.0",
     "parse-domain": "^0.2.1",
     "ramda": "^0.22.1",
     "readability": "file:./node_local_modules/readability/",
