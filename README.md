@@ -88,7 +88,7 @@ You can play with the API with postman [when the app has launched locally](#runn
 - *This object contains information extracted from `<meta>` tags within the `<head>` of the html page.*  
 - *All the above fields are optional, as their is no guaranty the media complies with certain standards.*
 - *When a field is provided, it has been validated to comply with both standard and type listed in the table bellow.*
-- *See the [STANDARD_META_MAPINGS](/STANDARD_META_MAPINGS.MD) annexe for more details about the mapping*
+- *Read the [STANDARD_META_MAPPINGS](/STANDARD_STANDARD_MAPINGS.MD) annexe for more details about the meta info extraction.*
 
 | key | **type**, (standard) | description |
 | --- | ---------| ------------ |
