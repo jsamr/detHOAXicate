@@ -1,0 +1,23 @@
+export default [
+  'facebook',
+  'whatsapp',
+  'qq',
+  'messenger',
+  'wechat',
+  'gitter',
+  'slack',
+  'qzone',
+  'google',
+  'twitter',
+  'tumblr',
+  'instagram',
+  'linkedin',
+  'snapchat',
+  'pinterest',
+  'baidu',
+  'tieba',
+  'ello',
+  'skype',
+  'telegram',
+  'line'
+]

@@ -1,0 +1,86 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+pre {
+  white-space: pre-wrap;
+}
+
+$appbackground: #bbbbbb;
+
+#Root {
+  display: flex;
+  flex-flow: column nowrap;
+  height: 100vh;
+  width: 100vw;
+  > #Header {
+    height: 80px;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    background: $appbackground;
+    > #UrlInput {
+      margin: 10px;
+      width: 80vw;
+      max-width: 800px;
+    }
+    > #UrlFeedback {
+      >.error {
+        color: red;
+      }
+      >.success {
+        color: #008e00;
+      }
+      >.info {
+        color: blue;
+      }
+    }
+    > #AnalysisOutput {
+      flex-grow: 1;
+      margin: 10px;
+      align-self: stretch;
+      background: #111023;
+      color: whitesmoke;
+    }
+  }
+  > #Frame {
+    flex-grow: 1;
+  }
+  > #Footer {
+    background: $appbackground;
+    height: 22px;
+    fontSize: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  > #SourcesTree_container {
+    > #SourcesTree {
+
+      > #SourceTree_header {
+        font-size: 45px;
+        text-align: center;
+      }
+      background: black;
+      color: white;
+    }
+    > #Loader {
+      text-align: center;
+      color: black;
+      font-size: 60px;
+      background: rgba(99, 99, 99, 0.2);
+      padding: 20px;
+      border-radius: 50%;
+    }
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    width: 80vw;
+    height: 60vh;
+    position: absolute;
+    top: 20vh;
+    left: 10vw;
+    overflow: auto;
+  }
+}
