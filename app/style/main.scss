@@ -1,6 +1,10 @@
+@import './fonts.scss';
+
 body {
   margin: 0;
   padding: 0;
+  font-family: 'Bariol', sans-serif;
+  font-weight: 200;
 }
 
 pre {
