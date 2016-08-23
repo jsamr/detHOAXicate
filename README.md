@@ -1,5 +1,6 @@
 # DetHOAXicate - The Hoax Decompiler
 
+[![JavaScript Style Guide](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 
 ## Compliance
 
@@ -14,11 +15,19 @@ Those are *standards* this application should tend to comply with
 
 [open graph article](https://developers.facebook.com/docs/reference/opengraph/object-type/article/)
 
-## Developpers
+## Developers
 
 ### Installing
 
-You should first install eslint `^3.1.0` globally  
+First sart with those commands
+
+```
+npm clone https://github.com/sveinburne/detHOAXicate.git
+cd detHOAXicate
+git config commit.template ./.gitmessage
+```
+
+Then, you should install eslint `^3.1.0` globally  
 ```
 npm i -g eslint@^3.1.0
 ```
@@ -40,6 +49,17 @@ npm start
 ```
 npm test
 ```
+
+### Contributing
+
+[![JavaScript Style Guide](https://cdn.rawgit.com/feross/standard/master/badge.svg)](https://github.com/feross/standard)
+
+Before any commit, you MUST : 
+
+- Run a `npm test` command that succeed. The test command also run eslint to validate code style (compliance with JS Standard Code Style, see above badge.)
+- Describe the commit message in accordance with our `.gitmessage` template.
+To do so, make sure you have configured git commit templates for this project with the following command :
+`git config commit.template ./.gitmessage`. We aim at high quality commit messages, so please do your best!
 
 ## API
 
