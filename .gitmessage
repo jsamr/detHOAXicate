@@ -1,0 +1,21 @@
+# You MUST leave a blank line between each of the above sections
+# Communicating with other coders through high quality commit is
+# mandatory to achieve good code quality.
+#----------------------------------------------------------------------#
+# 1. WHY this commit is necessary? :                                   #
+# (50 chars max), see the above @ symbol                               #
+#-----------------------------------------------@----------------------#
+
+
+#----------------------------------------------------------------------#
+# 2. Describe HOW this commit addresses the above goal                 #
+# For each 'HOW', please mention side effects                          #
+# (You MUST wrap lines to 72 chars, marked by the tailing # symbol)    #
+#----------------------------------------------------------------------#
+
+
+#----------------------------------------------------------------------#
+# 3. [optional] Provide, if any, references to issue trackers          #
+# example: fixes #123                                                  #
+#----------------------------------------------------------------------#
+
