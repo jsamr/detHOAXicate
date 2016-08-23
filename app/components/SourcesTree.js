@@ -1,4 +1,4 @@
-import {div, pre, i } from '@cycle/dom'
+import { div, pre, i } from '@cycle/dom'
 import xs from 'xstream'
 
 function SourcesTree ({ parseUrlResponse, parseUrlLoading }) {

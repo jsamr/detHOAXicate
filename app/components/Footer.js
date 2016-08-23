@@ -1,7 +1,7 @@
 import xs from 'xstream'
 import { div } from '@cycle/dom'
 
-function Footer ({ /* DOM */ }) {
+function Footer (/* sources */) {
   return {
     DOM: xs.of(div('#Footer', 'detHOAXicate, the HOAX decompiler - credits Jules Randolph, Romain Poussier'))
   }
