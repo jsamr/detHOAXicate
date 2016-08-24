@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg">
+<metadata>Copyright (C) 2016 by original authors @ fontello.com</metadata>
+<defs>
+<font id="fontello" horiz-adv-x="1000" >
+<font-face font-family="fontello" font-weight="400" font-stretch="normal" units-per-em="1000" ascent="850" descent="-150" />
+<missing-glyph horiz-adv-x="1000" />
+<glyph glyph-name="book-open" unicode="&#xe800;" d="M464 629q5 5 15 12t47 26 83 35 127 27 175 12l0-670q-95 0-176-12t-128-27-82-34-47-29l-14-10q-4 4-13 12t-46 26-83 35-127 27-177 12l0 670q94 0 174-12t128-27 83-33 48-29z m-334 0l0-450q172-14 279-71l0 449q-110 58-279 72z m669-450l0 450q-168-14-278-72l0-449q108 57 278 71z" horiz-adv-x="928" />
+
+<glyph glyph-name="spin6" unicode="&#xe839;" d="M855 9c-189-190-520-172-705 13-190 190-200 494-28 695 11 13 21 26 35 34 36 23 85 18 117-13 30-31 35-76 16-112-5-9-9-15-16-22-140-151-145-379-8-516 153-153 407-121 542 34 106 122 142 297 77 451-83 198-305 291-510 222l0 1c236 82 492-24 588-252 71-167 37-355-72-493-11-15-23-29-36-42z" horiz-adv-x="1000" />
+</font>
+</defs>
+</svg>

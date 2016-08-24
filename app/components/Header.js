@@ -5,24 +5,30 @@ import identity from 'lodash/identity'
 
 function makeUrlFeedback (url) {
   if (url) return isValidURL(url) ? i('.success .fa .fa-check') : i('.error .fa .fa-warning')
-  else return i('.info .fa .fa-search')
+  else return i('.info.fa.fa-search')
 }
 
 function feedbackLoadingIcon () {
-  return i('.fa .fa-spinner .fa-spin')
+  return div('.flex-inline-centered', [ i('.icon-spin6 .icon-spin') ])
 }
 
 function feedbackErrorIcon () {
   return div('.flex-column-centered', [
-    i('.fa .fa-warning .error'),
+    i('.fa.fa-warning.error'),
     span('.small-font', 'detHOAXicate could not parse this link. Please try an other link')
   ])
 }
 
 function toggleSourcesPanelViewButton (isOpen) {
   console.info('IS_OPEN', isOpen)
-  return div('#SourceTreeToggle', { attrs: { class: '.flex-inline-centered' } }, [
-    isOpen ? div('.button', [ i('.fa.fa-pagelines'), 'HIDE SOURCES TREE' ]) : div('.button', [ i('.fa.fa-pagelines'), 'DISPLAY SOURCES TREE' ])
+  return div('.flex-inline-centered', [
+    div('#SourceTreeToggle', { attrs: { class: 'flex-inline-centered button' } },
+      isOpen ? [ i('.fa.fa-pagelines.fa-opposite'), 'HIDE SOURCES TREE' ] : [ i('.fa.fa-pagelines'), 'DISPLAY SOURCES TREE' ]
+    ),
+    div('#ReadModeToggle', { attrs: { class: 'button' } }, [
+      i('.icon-book-open'),
+      span('READ MODE')
+    ])
   ])
 }
 
