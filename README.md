@@ -99,6 +99,7 @@ You can play with the API with postman [when the app has launched locally](#runn
 | parseSuccess | **boolean** | wether or not the url could be parsed |
 | sourcesCandidates | **[[ArticleRepresentation](#article-meta-info-o)] &#124; `null`** | an array of the referred, externals articles candidates. Note that depending on the `depth` request parameter, this field might or might not be `null`.  |
 | metaInfo | **[ArticleMetaInfo](#article-description-o)** | a set of meta info about the article, see below |
+| sanitizedArticleHtml |**string**, DOM formatted  | The sanitized, readability version of the article. **Only available for the root ArticleRepresentation element** |
 | standardsCompliance | **[StandardsCompliance](#standards-compliance-o)** | information about the level of compliance with web standards, see below |
 | socialLinks | **[string, [URL](https://url.spec.whatwg.org//)]** | An array of social media links embedded in this article|
 | internalArticleCandidates | **[string, [URL](https://url.spec.whatwg.org//)]** | An array of probable articles URL referred inside the website |
