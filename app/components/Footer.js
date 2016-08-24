@@ -1,9 +1,12 @@
 import xs from 'xstream'
-import { div } from '@cycle/dom'
+import { span, a, i } from '@cycle/dom'
 
 function Footer (/* sources */) {
   return {
-    DOM: xs.of(div('#Footer', 'detHOAXicate, the HOAX decompiler - credits Jules Randolph, Romain Poussier'))
+    DOM: xs.of(span('#Footer', [
+      span('credits to Jules Randolph, Romain Poussier - License MIT '),
+      a({ attrs: { href: 'https://github.com/sveinburne/detHOAXicate' } }, [ i('.fa .fa-github'), 'github' ])
+    ]))
   }
 }
 

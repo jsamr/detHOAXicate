@@ -5,7 +5,10 @@ function makeIframe (selectedUrl) {
 }
 
 function makeFallbackDiv () {
-  return div('#Frame', 'Please paste an URL')
+  return div('#Frame', [
+    div('Welcome to detHOAXicate!'),
+    div('Paste a link to start detHOAXicating information')
+  ])
 }
 
 /**

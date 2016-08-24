@@ -2,9 +2,9 @@ import { makeDOMDriver } from '@cycle/dom'
 import { makeHTTPDriver } from '@cycle/http'
 import Cycle from '@cycle/xstream-run'
 
-import './style/main.scss'
 import 'font-awesome/scss/font-awesome.scss'
 import 'normalize.css/normalize.css'
+import './style/main.scss'
 
 import Root from './components/Root'
 

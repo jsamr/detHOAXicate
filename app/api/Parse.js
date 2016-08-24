@@ -5,12 +5,13 @@ function Parse ({ selectedUrl }) {
     url: '/api/parse',
     method: 'POST',
     type: 'application/json',
+    progress: false,
     category: 'parse',
     send: {
       url: url,
       depth: 2
     }
-  })).startWith(null)
+  }))
   return {
     HTTP: request$
   }
