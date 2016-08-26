@@ -1,0 +1,30 @@
+@import '../config';
+@import '../mixins';
+
+%TitleBar {
+  @include cardlike(bottom);
+  transition: $default-transitions;
+  flex-shrink: 0;
+  text-align: center;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+  .title {
+    font-size: 35px;
+    font-family: 'LibertineDisplay', serif;
+  }
+  overflow: hidden;
+  background: $article-nodes-background;
+  &.expanded {
+    flex-grow: 1;
+    flex-basis: auto;
+  }
+  &.collapsed {
+    flex-grow: 0.0001;
+    flex-basis: 0;
+  }
+  .actions {
+    display: flex;
+  }
+}

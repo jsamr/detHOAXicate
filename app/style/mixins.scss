@@ -1,6 +1,18 @@
+@import './config';
+
 @mixin placeholder {
   ::-webkit-input-placeholder {@content}
   :-moz-placeholder           {@content}
   ::-moz-placeholder          {@content}
   :-ms-input-placeholder      {@content}
+}
+
+@mixin cardlike ($place) {
+  box-shadow: $card-box-shadow;
+  @if $place == bottom {
+    margin-bottom: 3px;
+  }
+  @if $place == top {
+    margin-top: 3px;
+  }
 }

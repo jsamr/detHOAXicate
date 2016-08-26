@@ -1,0 +1,60 @@
+@import '../config';
+
+%Header {
+  height: $Header-height;
+  background: $app-background;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  > #Title {
+    padding-left: 10px;
+    text-align: center;
+    font-size: 45px;
+    margin-right: 10px;
+    > #Subtitle {
+      font-size: 15px;
+      word-spacing: 8px;
+      letter-spacing: 5px;
+    }
+  }
+  > #UrlSearch {
+    box-shadow: $card-box-shadow;
+    flex-grow: 1;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    margin: 10px;
+    width: 80vw;
+    max-width: 1200px;
+    padding: 10px;
+    border-radius: 30px;
+    background: white;
+    #UrlInput {
+      flex-grow: 1;
+      font-size: 18px;
+      background: inherit;
+      text-align: center;
+      color: $info-color;
+    }
+    #ReadModeToggle {
+      cursor: pointer;
+    }
+    .UrlSearch_feedback {
+      width: 40px;
+      font-size: 25px;
+      opacity: 1;
+      text-align: center;
+      &.disabled {
+        opacity: 0.2;
+      }
+    }
+  }
+  > #AnalysisOutput {
+    flex-grow: 1;
+    margin: 10px;
+    align-self: stretch;
+    background: #111023;
+    color: whitesmoke;
+  }
+}

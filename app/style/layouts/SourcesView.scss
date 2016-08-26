@@ -1,0 +1,16 @@
+@import '../config';
+
+$SourcesView-background: #413a38;
+$SourcesView-color: white;
+
+%SourcesView {
+  position: absolute;
+  margin:auto;
+  padding: 30px;
+  left:0;
+  top:0;
+  transition: $default-transitions;
+  opacity: 0;
+  background: $SourcesView-background;
+  color: $SourcesView-color;
+}

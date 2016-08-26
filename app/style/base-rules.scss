@@ -1,0 +1,42 @@
+@import 'config';
+@import './mixins.scss';
+
+
+@include placeholder {
+  color: $default-placeholder-color;
+}
+
+a {
+  cursor: pointer;
+  text-decoration: none;
+  color: $default-links-color;
+}
+
+pre {
+  font-family: monospace;
+  white-space: pre-wrap;
+}
+
+textarea:focus, input:focus, textarea, input {
+  outline: none;
+  border: none;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: $base-font;
+  font-weight: 200;
+}
+
+i {
+  &.error {
+    color: $error-color;
+  }
+  &.success {
+    color: $success-color;
+  }
+  &.info {
+    color: $info-color;
+  }
+}

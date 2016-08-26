@@ -1,0 +1,62 @@
+// This scss is used to generate a specific stylesheet for the article iframe read mode
+
+@import './fonts';
+@import './config';
+
+body {
+  font-size: 22px;
+  font-family: $article-content-font;
+  background: whitesmoke;
+  max-width: 880px;
+  margin: auto;
+}
+
+%link {
+  &:after {
+    vertical-align: super;
+    font-size: 0.6em;
+    color: black;
+  }
+}
+
+a {
+  color: #15323f;
+  &.detHOAXicate-external-link {
+    color: #e31824;
+    &:after {
+      content: 'LIEN EXTERNE';
+      @extend %link;
+    }
+  }
+  &.detHOAXicate-internal-link {
+    color: #f96700;
+    &:after {
+      content: 'LIEN INTERNE';
+      @extend %link;
+    }
+  }
+
+}
+
+h1 {
+  font-size: 34px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: $article-title-font;
+}
+
+h2 {
+  font-size: 25px;
+}
+
+img {
+  max-height: 380px !important;
+  width: auto !important;
+  padding: 20px;
+}
+
+figure {
+  display: flex;
+  justify-content: center;
+}

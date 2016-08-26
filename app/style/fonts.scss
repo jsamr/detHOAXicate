@@ -1,4 +1,66 @@
+@import './config.scss';
+
 @font-face {
   font-family: 'Bariol';
-  src: url('Bariol.ttf');
+  src: url('#{$public-fonts-path}/Bariol.ttf');
+}
+
+@font-face {
+  font-family: 'LibertineDisplay';
+  src: url('#{$public-fonts-path}/LinLibertine-DRah.ttf');
+  font-variant: normal;
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: 'LibertineMono';
+  src: url('#{$public-fonts-path}/LinLibertine-Mah.ttf');
+  font-variant: normal;
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: 'Libertine';
+  src: url('#{$public-fonts-path}/LinLibertine-Rah.ttf');
+  font-variant: normal;
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: 'Libertine';
+  src: url('#{$public-fonts-path}/LinLibertine-RBah.ttf');
+  font-variant: normal;
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: 'Libertine';
+  src: url('#{$public-fonts-path}/LinLibertine-RBIah.ttf');
+  font-variant: normal;
+  font-weight: bold;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Libertine';
+  src: url('#{$public-fonts-path}/LinLibertine-RIah.ttf');
+  font-variant: normal;
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Libertine';
+  src: url('#{$public-fonts-path}/LinLibertine-RZah.ttf');
+  font-variant: normal;
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Libertine';
+  src: url('#{$public-fonts-path}/LinLibertine-RZIah.ttf');
+  font-variant: normal;
+  font-weight: 700;
+  font-style: italic;
 }

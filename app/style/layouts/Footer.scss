@@ -1,0 +1,22 @@
+@import '../config';
+
+$Footer_font-size: 14px;
+$Footer_height: 20px;
+$Footer_color: #536b7e;
+
+%Footer {
+  background: $app-background;
+  height: $Footer_height;
+  font-size: $Footer_font-size;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  color: $Footer_color;
+  * {
+    margin-right: 10px;
+  }
+  a {
+    font-weight: bold;
+  }
+}

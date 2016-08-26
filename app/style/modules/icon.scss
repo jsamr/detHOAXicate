@@ -1,0 +1,14 @@
+
+.ico-opposite:after {
+  content: '⟍';
+  text-shadow: 2px 0 #d1d1d1;
+  position: absolute;
+  left: 0.20em;
+  top: 0.12em;
+  font-size: 1em;
+  font-family: 'LibertineDisplay', serif;
+}
+
+.icon-spin {
+  animation: spin 0.6s infinite linear;
+}

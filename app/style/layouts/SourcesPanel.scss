@@ -1,0 +1,57 @@
+@import '../config';
+@import '../mixins';
+@import './SourcesView';
+
+$SourcesPanel_header-height: 23px;
+$SourcesPanel_header-font-size: 23px;
+$SourcesPanel_header-color: black;
+
+%SourcesPanel_header {
+  flex-shrink: 0;
+  transition: $default-transitions;
+  width: 100%;
+  height: $SourcesPanel_header-height;
+  color: $SourcesPanel_header-color;
+  z-index: 1;
+  background: $article-nodes-background;
+  .title {
+    font-size: $SourcesPanel_header-font-size;
+    text-align: center;
+  }
+}
+
+%SourcesPanel {
+  @include cardlike(top);
+  display: flex;
+  flex-shrink: 0;
+  flex-flow: column nowrap;
+  align-items: center;
+  width: 100vw;
+  max-width: 100%;
+  transition: $default-transitions;
+  position: relative;
+  overflow: auto;
+  > #SourcesView {
+    @extend %SourcesView;
+  }
+  // states
+  &.is-small {
+    flex-basis: $SourcesPanel_header-height;
+    overflow: hidden;
+    flex-grow: 0.0001;
+  }
+  &.is-collapsed {
+    flex-basis: 0;
+    overflow: hidden;
+    flex-grow: 0.0001;
+  }
+  &.is-expanded {
+    flex-grow: 100;
+    > #SourcesView {
+      opacity:1;
+    }
+  }
+  > #SourcesPanel_header {
+     @extend %SourcesPanel_header;
+  }
+}
