@@ -6,4 +6,8 @@ const Input = Event('input', x => x.target && x.target.value)
 // Button(DOM.select('.some-button'))
 const Button = Event('click')
 
-export { Event, Input, Button }
+export {
+  Event,
+  Input,
+  Button
+}

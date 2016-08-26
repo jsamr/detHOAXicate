@@ -5,7 +5,7 @@ function Footer (/* sources */) {
   return {
     DOM: xs.of(span('#Footer', [
       span('credits to Jules Randolph, Romain Poussier - License MIT '),
-      a({ attrs: { href: 'https://github.com/sveinburne/detHOAXicate' } }, [ i('.fa .fa-github'), 'github' ])
+      a({ attrs: { href: 'https://github.com/sveinburne/detHOAXicate', target: '_blank' } }, [ i('.fa .fa-github'), 'github' ])
     ]))
   }
 }

@@ -10,13 +10,13 @@ function SourcesPanel ({ parseUrlResponse, parseUrlLoading, parseUrlError, openP
     const canShowContent = !isLoading && articleRep
     return div('#SourcesPanel', {
       attrs: {
-        'data-ui-state': `${canShowContent ? (isPanelOpen ? '' : 'small') : 'collapsed'}`
+        class: `${canShowContent ? (isPanelOpen ? 'is-expanded' : 'is-small') : 'is-collapsed'}`
       }
     }, [
-      div('#SourcesPanel_header.flex-inline-centered ', [
-        span('.padded', 'Sources Panel')
+      div('#SourcesPanel_header', { attrs: { class: 'flex-inline-centered' } }, [
+        span('.title', 'Sources Panel')
       ]),
-      isPanelOpen ? pre('', JSON.stringify(articleRep, null, 2)) : null
+      pre('#SourcesView', JSON.stringify(articleRep, null, 2))
     ])
   })
   // merge errors mapped to null so that the previous diagram does not display upon error
