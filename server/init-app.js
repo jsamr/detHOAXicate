@@ -1,14 +1,18 @@
-const path = require('path')
-const express = require('express')
-const webpack = require('webpack')
-const webpackMiddleware = require('webpack-dev-middleware')
-const webpackHotMiddleware = require('webpack-hot-middleware')
-const config = require('../webpack.config.js')
+import path from 'path'
+import express from 'express'
+import webpack from 'webpack'
+import webpackMiddleware from 'webpack-dev-middleware'
+import webpackHotMiddleware from'webpack-hot-middleware'
+import config from '../webpack.config'
+import articleConfig from '../webpack.article.config'
+
+import initRoutes from './init-routes'
+import initSecurity from './init-security'
 
 const isDeveloping = process.env.NODE_ENV !== 'production'
 const app = express()
 
-if (isDeveloping) {
+function useConfig (config) {
   const compiler = webpack(config)
   const middleware = webpackMiddleware(compiler, {
     publicPath: config.output.publicPath,
@@ -22,9 +26,13 @@ if (isDeveloping) {
       modules: false
     }
   })
-
   app.use(middleware)
   app.use(webpackHotMiddleware(compiler))
+}
+
+if (isDeveloping) {
+  const middleware = useConfig(config)
+  useConfig(articleConfig)
   app.get('/', function response (req, res) {
     res.write(middleware.fileSystem.readFileSync(path.join(__dirname, 'dist/index.html')))
     res.end()
@@ -35,5 +43,8 @@ if (isDeveloping) {
     res.sendFile(path.join(__dirname, 'dist/index.html'))
   })
 }
+
+initRoutes(app)
+initSecurity(app)
 
 export default app

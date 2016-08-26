@@ -1,4 +1,4 @@
-import app from './init-routes'
+import app from './init-app'
 const isDeveloping = process.env.NODE_ENV !== 'production'
 
 /* eslint no-console: 0 */

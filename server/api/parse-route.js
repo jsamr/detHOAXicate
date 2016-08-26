@@ -1,25 +1,28 @@
 import isUrl from 'validator/lib/isURL'
 import { parseUrl } from '../parser'
-import Promise from 'bluebird'
 
-/**
- * Parse the dom of the given url and build an index of all classes names
- * @param {string} url - The url to parse
- * @param {number} depth - The depth of the tree
- * @returns {Promise} - A promise which resolves to an object with two fields :
- * {number} internalCount, the number of internal links (sharing url domain)
- * {Array<string>} externals, the urls to external resources
- */
-function parse (url, depth) {
-  const value = new Promise((resolve, reject) => {
-    console.info('RECEIVED PARSE URL REQUEST WITH URL ', url, ' AND DEPTH ', depth)
+// Could use https://github.com/ctavan/express-validator
+function parseRoute (req, res) {
+  if (req.is('application/json')) {
+    const { url, depth } = req.body
     if (typeof url === 'string' && isUrl(url)) {
-      resolve(parseUrl(url, depth))
+      if (typeof depth === 'number' || depth == null) {
+        parseUrl(url, depth)
+          .then((links) => {
+            res.setHeader('Content-Type', 'application/json')
+            res.send(JSON.stringify(links))
+          })
+          .catch((err) => {
+            console.error(err)
+            res.status(500).send(`Server error: ${err.message}`)
+          })
+      } else res.status(422).send('Wrong DEPTH parameter. Must be an integer.')
     } else {
-      reject(new TypeError('Could not process request, url is not of expected format'))
+      res.status(422).send('Wrong URL format.')
     }
-  })
-  return value
+  } else {
+    res.status(406).send()
+  }
 }
 
-export default parse
+export default parseRoute

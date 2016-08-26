@@ -1,9 +1,11 @@
-import cors from 'cors'
+// For later use
+// import cors from 'cors'
 
-const corsOptions = {
-  
+function setContentPolicy (req, res, next) {
+  res.setHeader('Content-Security-Policy', "script-src 'self'")
+  next()
 }
 
 export default function (app) {
-  app.use(cors())
+  app.use(setContentPolicy)
 }
