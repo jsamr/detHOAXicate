@@ -1,6 +1,34 @@
 import { Readability } from 'readability'
 
 class ReadabilityCustom extends Readability {
+
+  sanitizeDoc () {
+    this._removeLinks(this._doc)
+    this._removeScripts(this._doc)
+    // prevent auto refresh
+    this._removeNodes(this._doc.querySelectorAll('meta[http-equiv=refresh]'))
+    this._removeNodes(this._doc.getElementsByTagName('style'))
+  }
+
+  retrievePageFromArticleNode (articleNode) {
+    const html = this._doc.createElement('html')
+    const body = this._doc.createElement('body')
+    this.sanitizeDoc()
+    body.appendChild(articleNode)
+    html.appendChild(this._doc.doctype)
+    html.appendChild(this._doc.head)
+    html.appendChild(body)
+    return html.outerHTML
+  }
+
+  _removeLinks (doc) {
+    this._removeNodes(doc.getElementsByTagName('link'), (scriptNode) => {
+      scriptNode.nodeValue = ''
+      scriptNode.removeAttribute('src')
+      return true
+    })
+  }
+
   /**
    * Runs readability.
    *
@@ -41,7 +69,7 @@ class ReadabilityCustom extends Readability {
     var articleContent = this._grabArticle()
     if (!articleContent) return null
     else return articleContent
-  // this._postProcessContent(articleContent)
+    // this._postProcessContent(articleContent)
   }
 }
 

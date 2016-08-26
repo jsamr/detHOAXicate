@@ -45,7 +45,7 @@ function getArticleRepresentation (window, targetUrl, depth, currentDepth) {
         url: targetUrl,
         parseSuccess: true,
         metaInfo,
-        sanitizedArticleHtml: currentDepth === 0 ? articleNode.innerHTML : undefined,
+        sanitizedArticleHtml: currentDepth === 0 ? articleMiner.retrieveArticlePage(articleNode) : undefined,
         standardsCompliance: {},
         socialLinks: socialmedia,
         internalArticleCandidates: R.filter((link) => !/^.*\/$/.test(link), internals)

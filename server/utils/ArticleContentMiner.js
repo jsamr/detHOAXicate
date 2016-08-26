@@ -73,6 +73,10 @@ class ArticleContentMiner {
     this.targetUrl = targetUrl
   }
 
+  retrieveArticlePage (articleNode) {
+    return this.readability.retrievePageFromArticleNode(articleNode)
+  }
+
   findSourcesWithCustomMiner () {
     const now = new Date()
     let matches = R.uniq(queryAll(this.body, ARTICLE_JOINED_QUERIES))
