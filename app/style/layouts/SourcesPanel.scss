@@ -4,7 +4,7 @@
 
 $SourcesPanel_header-height: 23px;
 $SourcesPanel_header-font-size: 23px;
-$SourcesPanel_header-color: black;
+$SourcesPanel_header-color: $article-nodes-color;
 
 %SourcesPanel_header {
   flex-shrink: 0;

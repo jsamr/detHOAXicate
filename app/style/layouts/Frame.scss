@@ -26,19 +26,25 @@
   align-self: stretch;
   transition: $default-transitions;
   position: relative;
+  color: white;
+  background: $frame-bg url($arrow-pattern);
   // states
   &.is-collapsed {
     flex-shrink: 1;
     flex-grow: 0.0001;
     flex-basis: 0;
-    opacity: 0;
+    > #Article {
+      opacity: 0;
+    }
     #Article_body {
       z-index: -1;
     }
   }
   &.is-expanded {
     flex-grow: 100;
-    opacity: 1;
+    > #Article {
+      opacity: 1;
+    }
   }
   > #Article {
     @extend %Article;

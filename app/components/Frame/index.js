@@ -1,4 +1,4 @@
-import { iframe, div } from '@cycle/dom'
+import { iframe, div, img } from '@cycle/dom'
 import xs from 'xstream'
 
 function renderExternalSite (selectedUrl) {
@@ -15,7 +15,7 @@ function renderExternalSite (selectedUrl) {
 function renderFallback () {
   return [
     div('Welcome to detHOAXicate!'),
-    div('Paste a link to start detHOAXicating information')
+    div('Paste a link to start detoxicating information')
   ]
 }
 

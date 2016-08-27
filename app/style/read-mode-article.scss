@@ -6,9 +6,11 @@
 body {
   font-size: 22px;
   font-family: $article-content-font;
-  background: whitesmoke;
+  background: transparent;
   max-width: 880px;
   margin: auto;
+  color: $article-font-color;
+  background: transparent;
 }
 
 %link {
@@ -20,7 +22,7 @@ body {
 }
 
 a {
-  color: #15323f;
+  color: $article-href-color;
   &.detHOAXicate-external-link {
     color: #e31824;
     &:after {

@@ -5,7 +5,7 @@ $Footer_height: 20px;
 $Footer_color: #536b7e;
 
 %Footer {
-  background: $app-background;
+  background: $app-background url($arrow-pattern);
   height: $Footer_height;
   font-size: $Footer_font-size;
   display: flex;

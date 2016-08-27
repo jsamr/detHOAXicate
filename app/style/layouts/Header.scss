@@ -2,7 +2,7 @@
 
 %Header {
   height: $Header-height;
-  background: $app-background;
+  background: $app-background url($arrow-pattern);
   display: flex;
   align-items: center;
   justify-content: space-between;
