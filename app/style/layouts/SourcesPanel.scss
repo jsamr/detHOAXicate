@@ -3,7 +3,7 @@
 @import './SourcesView';
 
 $SourcesPanel_header-height: 23px;
-$SourcesPanel_header-font-size: 23px;
+$SourcesPanel_header-font-size: 20px;
 $SourcesPanel_header-color: $article-nodes-color;
 
 %SourcesPanel_header {
@@ -32,6 +32,7 @@ $SourcesPanel_header-color: $article-nodes-color;
   transition: $default-transitions;
   position: relative;
   overflow: auto;
+  background: $frame-bg;
   > #SourcesView {
     top: $SourcesPanel_header-height;
     @extend %SourcesView;

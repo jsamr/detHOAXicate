@@ -13,8 +13,9 @@ $app-background: #d9e2f3;
 $default-transitions: all 0.6s ease;
 $article-font-color: whitesmoke;
 $article-href-color: #317f9a;
-$frame-bg: #292827;
-$article-nodes-background: lighten($frame-bg, 15) url($arrow-pattern);
+$frame-bg-color: #292827;
+$frame-bg: $frame-bg-color url($arrow-pattern);
+$article-nodes-background: lighten($frame-bg-color, 15) url($arrow-pattern);
 $article-nodes-color: $article-font-color;
 
 // Spaces

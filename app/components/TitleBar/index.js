@@ -1,6 +1,6 @@
 import { div, i, a } from '@cycle/dom'
 import xs from 'xstream'
-import { makeToggleButton } from '../dom-utils'
+import { makeToggleButton } from 'app/dom-utils'
 
 const toggleSourcesPanelViewButton = makeToggleButton(
   '#SourceTreeToggle',

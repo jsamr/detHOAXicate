@@ -1,81 +1,55 @@
-import { iframe, div, img } from '@cycle/dom'
+import { div } from '@cycle/dom'
 import xs from 'xstream'
 
-function renderExternalSite (selectedUrl) {
-  return [ iframe('#Article', {
-    attrs: {
-      src: selectedUrl,
-      name: 'iframe',
-      sandbox: undefined,
-      frameBorder: '0'
-  }})
-  ]
+import { pausable, complement } from 'shared/stream-utils'
+import ArticleReadMode from './ArticleReadMode'
+import Fallback from './Fallback'
+import EmbeddedExternalSite from './EmbeddedExternalSite'
+
+function view ({ innerVdom, isPanelOpen }) {
+  const attrs = { class: isPanelOpen ? 'is-collapsed' : 'is-expanded' }
+  return div('#Frame', { attrs }, [ innerVdom ])
 }
 
-function renderFallback () {
-  return [
-    div('Welcome to detHOAXicate!'),
-    div('Paste a link to start detoxicating information')
-  ]
-}
-
-function renderReadModeArticle (htmlString) {
-  // this function injects html in the iframe
-  const injectArticleReadModeIframe = (vnode) => {
-    const doc = vnode.elm.contentWindow.document
-    // TODO prevent costly (+ blinking screen) updates when the component class changes
-    doc.open()
-    doc.write(htmlString)
-    doc.close()
-    const link = doc.createElement('link')
-    // TODO get the appropriate root URL
-    link.setAttribute('href', 'http://localhost:3000/public/read-mode-article.css')
-    link.setAttribute('type', 'text/css')
-    link.setAttribute('rel', 'stylesheet')
-    doc.head.appendChild(link)
+function transform (sources) {
+  const { articleInnerHtml$, isReadModeOn$, ...otherSources } = sources
+  const isReadModeOff$ = isReadModeOn$.compose(complement)
+  const innerHtml$ = articleInnerHtml$
+  return {
+    isReadModeOff$,
+    isReadModeOn$,
+    innerHtml$,
+    ...otherSources
   }
-  let vdom
-  vdom = [
-    div('#Article', [
-      iframe('#Article_body', {
-        hook: {
-          update: injectArticleReadModeIframe,
-          insert: injectArticleReadModeIframe
-        },
-        attrs: {
-          src: 'about:blank',
-          frameBorder: '0'
-        }
-      })
-    ])
-  ]
-  return vdom
-}
-
-function view ({ innerHtml, selectedUrl, readModeOn, isPanelOpen }) {
-  const attrs = isPanelOpen ? { class: 'is-collapsed' } : { class: 'is-expanded' }
-  const innerElem = innerHtml ? (readModeOn ? renderReadModeArticle(innerHtml) : renderExternalSite(selectedUrl)) : renderFallback()
-  return div('#Frame', { attrs }, innerElem)
 }
 
 function model (sources) {
-  const { selectedUrl$, rootArticleInnherHtmlStream$, isReadModeOn$, isPanelOpen$ } = sources
+  const { selectedUrl$, innerHtml$, isReadModeOn$, isReadModeOff$, isPanelOpen$ } = sources
+  const fallback = Fallback().DOM
+  const articleReadMode = ArticleReadMode({ innerHtml$ }).DOM.compose(pausable(isReadModeOn$))
+  const embeddedExternalSite = EmbeddedExternalSite({ selectedUrl$ }).DOM.compose(pausable(isReadModeOff$))
+  const innerVdom$ = xs.merge(
+    fallback,
+    articleReadMode,
+    embeddedExternalSite
+  )
   return xs.combine(
-    rootArticleInnherHtmlStream$.startWith(null),
-    selectedUrl$,
-    isReadModeOn$,
+    innerVdom$,
     isPanelOpen$
-  ).map(([innerHtml, selectedUrl, readModeOn, isPanelOpen]) => ({ innerHtml, selectedUrl, readModeOn, isPanelOpen }))
+  ).map(([innerVdom, isPanelOpen]) => ({ innerVdom, isPanelOpen }))
 }
 
 /**
  * @param sources
  * @param {stream} sources.selectedUrl$ - a stream of urls
+ * @param {stream} sources.articleInnerHtml$ - a stream of pure text html
+ * @param {stream} sources.isPanelOpen$ - a stream of boolean
+ * @param {stream} sources.isReadModeOn$ - a stream of boolean
  * @returns {{DOM: stream}}
- * @constructor
  */
 function Frame (sources) {
-  const state$ = model(sources)
+  const transformedSources = transform(sources)
+  const state$ = model(transformedSources)
   const vdom$ = state$.map(view)
   return {
     DOM: vdom$

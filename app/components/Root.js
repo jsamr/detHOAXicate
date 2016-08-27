@@ -17,13 +17,13 @@ function extractRootArticleInnherHtml (articleRepFlow$) {
 function transform (sources) {
   const { DOM, HTTP } = sources
   const { parseUrlResponse$, parseUrlError$ } = splitHttpScope('parse', HTTP)
-  const rootArticleInnherHtmlStream$ = parseUrlResponse$.compose(extractRootArticleInnherHtml)
+  const articleInnerHtml$ = parseUrlResponse$.compose(extractRootArticleInnherHtml)
   const header = Header({ DOM, parseUrlError$, parseUrlResponse$ })
   const { selectedUrlSanitized$, parseUrlLoading$, isReadModeOn$ } = header
   const canShowDiagram$ = xs.combine(parseUrlLoading$, parseUrlResponse$).map(([isLoading, articleRep]) => !isLoading && !!articleRep)
   const titleBar = TitleBar({ DOM, parseUrlResponse$, canShowDiagram$ })
   const isPanelOpen$ = titleBar.isPanelOpen$
-  const frame = Frame({ selectedUrl$: selectedUrlSanitized$, rootArticleInnherHtmlStream$, isReadModeOn$, isPanelOpen$ })
+  const frame = Frame({ selectedUrl$: selectedUrlSanitized$, articleInnerHtml$, isReadModeOn$, isPanelOpen$ })
   const sourcesPanel = SourcesPanel({ DOM, parseUrlResponse$, parseUrlLoading$, isPanelOpen$ })
   const footer = Footer({ DOM })
   return {
