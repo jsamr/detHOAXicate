@@ -50,9 +50,23 @@ function makeLintArticle (htmlString, attrs) {
   return vdom
 }
 
-function buildFrame ([html, selectedUrl, readModeOn, isPanelOpen]) {
+function renderFrame ({ innerHtml, selectedUrl, readModeOn, isPanelOpen }) {
   const attrs = isPanelOpen ? { class: 'is-collapsed' } : { class: 'is-expanded' }
-  return readModeOn ? makeLintArticle(html, attrs) : (selectedUrl ? makeIframe(selectedUrl, attrs) : makeFallbackDiv(attrs))
+  return readModeOn ? makeLintArticle(innerHtml, attrs) : (selectedUrl ? makeIframe(selectedUrl, attrs) : makeFallbackDiv(attrs))
+}
+
+function view (state$) {
+  return state$.map(renderFrame).startWith(makeFallbackDiv())
+}
+
+function model (sources) {
+  const { selectedUrl$, rootArticleInnherHtmlStream$, readMode$, isPanelOpen$ } = sources
+  return xs.combine(
+    rootArticleInnherHtmlStream$,
+    selectedUrl$,
+    readMode$,
+    isPanelOpen$
+  ).map(([innerHtml, selectedUrl, readModeOn, isPanelOpen]) => ({ innerHtml, selectedUrl, readModeOn, isPanelOpen }))
 }
 
 /**
@@ -62,13 +76,8 @@ function buildFrame ([html, selectedUrl, readModeOn, isPanelOpen]) {
  * @constructor
  */
 function Frame (sources) {
-  const { selectedUrl$, rootArticleInnherHtmlStream$, readMode$, isPanelOpen$ } = sources
-  const vdom$ = xs.combine(
-    rootArticleInnherHtmlStream$,
-    selectedUrl$,
-    readMode$,
-    isPanelOpen$
-  ).map(buildFrame).startWith(makeFallbackDiv())
+  const state$ = model(sources)
+  const vdom$ = view(state$)
   return {
     DOM: vdom$
   }

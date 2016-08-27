@@ -13,6 +13,9 @@
   .title {
     font-size: 35px;
     font-family: 'LibertineDisplay', serif;
+    .link {
+      margin-left: 10px;
+    }
   }
   overflow: hidden;
   background: $article-nodes-background;
