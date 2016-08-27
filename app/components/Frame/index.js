@@ -1,7 +1,7 @@
 import { iframe, div } from '@cycle/dom'
 import xs from 'xstream'
 
-function makeIframe (selectedUrl, attrs) {
+function renderExternalSite (selectedUrl, attrs) {
   return iframe('#Frame', { attrs: {
     src: selectedUrl,
     name: 'iframe',
@@ -12,15 +12,16 @@ function makeIframe (selectedUrl, attrs) {
   })
 }
 
-function makeFallbackDiv (attrs) {
+function renderFallback (attrs) {
   return div('#Frame', { attrs }, [
     div('Welcome to detHOAXicate!'),
     div('Paste a link to start detHOAXicating information')
   ])
 }
 
-function makeLintArticle (htmlString, attrs) {
-  const insertArticleReadModeIframe = (vnode) => {
+function renderReadModeArticle (htmlString, attrs) {
+  // this function injects html in the iframe
+  const injectArticleReadModeIframe = (vnode) => {
     const doc = vnode.elm.contentWindow.document
     doc.open()
     doc.write(htmlString)
@@ -37,8 +38,8 @@ function makeLintArticle (htmlString, attrs) {
     div('#Article', [
       iframe('#Article_body', {
         hook: {
-          update: insertArticleReadModeIframe,
-          insert: insertArticleReadModeIframe
+          update: injectArticleReadModeIframe,
+          insert: injectArticleReadModeIframe
         },
         attrs: {
           src: 'about:blank',
@@ -52,19 +53,19 @@ function makeLintArticle (htmlString, attrs) {
 
 function renderFrame ({ innerHtml, selectedUrl, readModeOn, isPanelOpen }) {
   const attrs = isPanelOpen ? { class: 'is-collapsed' } : { class: 'is-expanded' }
-  return readModeOn ? makeLintArticle(innerHtml, attrs) : (selectedUrl ? makeIframe(selectedUrl, attrs) : makeFallbackDiv(attrs))
+  return readModeOn ? renderReadModeArticle(innerHtml, attrs) : (selectedUrl ? renderExternalSite(selectedUrl, attrs) : renderFallback(attrs))
 }
 
 function view (state$) {
-  return state$.map(renderFrame).startWith(makeFallbackDiv())
+  return state$.map(renderFrame).startWith(renderFallback())
 }
 
 function model (sources) {
-  const { selectedUrl$, rootArticleInnherHtmlStream$, readMode$, isPanelOpen$ } = sources
+  const { selectedUrl$, rootArticleInnherHtmlStream$, isReadModeOn$, isPanelOpen$ } = sources
   return xs.combine(
     rootArticleInnherHtmlStream$,
     selectedUrl$,
-    readMode$,
+    isReadModeOn$,
     isPanelOpen$
   ).map(([innerHtml, selectedUrl, readModeOn, isPanelOpen]) => ({ innerHtml, selectedUrl, readModeOn, isPanelOpen }))
 }

@@ -1,39 +1,54 @@
-import identity from 'lodash/identity'
 import { div, i, a } from '@cycle/dom'
 import xs from 'xstream'
+import { makeToggleButton } from '../dom-utils'
 
-function toggleSourcesPanelViewButton ([ canShow, isOpen ]) {
-  return div('.flex-inline-centered', [
-    div('#SourceTreeToggle', { attrs: { class: 'button' } },
-      isOpen ? [ i('.fa.fa-pagelines.ico-opposite'), 'CLOSES SOURCES PANEL' ] : [ i('.fa.fa-pagelines'), 'OPEN SOURCES PANEL' ]
-    )
-  ])
-}
+const toggleSourcesPanelViewButton = makeToggleButton(
+  '#SourceTreeToggle',
+  { label: 'CLOSES SOURCES PANEL', icon: '.fa.fa-pagelines.ico-opposite' },
+  { label: 'OPEN SOURCES PANEL', icon: '.fa.fa-pagelines' }
+)
 
-function titleBar ([ ans, sourcesPanelButton ]) {
+function renderTitleBar ({ ans, isSourcesPanelOpen }) {
   const { metaInfo, url } = ans || {}
   const { title } = metaInfo || {}
   return div('#TitleBar',  { attrs: { class: metaInfo ? 'expanded' : 'collapsed' } }, [
-    div('.title', [ title || '?[Title not found]' ]),
+    div('.title', [
+      title || '?[Title not found]',
+      a('#OpenLinkNewTab', { attrs: { class: 'link', href: url, target: '_blank' } }, [ i('.fa.fa-external-link') ])
+    ]),
     div('.actions', [
-      sourcesPanelButton,
-      a('#OpenLinkNewTab', { attrs: { class: 'button', href: url, target: '_blank' } }, [
-        i('.fa.fa-link'),
-        'OPEN LINK IN NEW TAB'
-      ])
+      toggleSourcesPanelViewButton(isSourcesPanelOpen)
     ])
   ])
 }
 
+function intent ({ DOM, ...sources }) {
+  return  {
+    isPanelOpen$: DOM.select('#SourceTreeToggle').events('click').fold((acc) => !acc, false),
+    ...sources
+  }
+}
+
+function model (sources) {
+  const { isPanelOpen$, parseUrlResponse$ } = sources
+  const metaInfoStream$ = parseUrlResponse$.filter((ans) => ans.parseSuccess).startWith(null)
+  return xs.combine(
+    metaInfoStream$,
+    isPanelOpen$
+  ).map(([ ans, isSourcesPanelOpen ]) => ({ ans, isSourcesPanelOpen }))
+}
+
+function view (state$) {
+  return state$.map(renderTitleBar)
+}
+
 function TitleBar (sources) {
-  const { parseUrlResponse, canShowDiagram, DOM } = sources
-  const isPanelOpen$ = DOM.select('#SourceTreeToggle').events('click').fold((acc) => !acc, false)
-  const sourcesPanelButton$ = xs.combine(canShowDiagram.startWith(false), isPanelOpen$.startWith(false)).map(toggleSourcesPanelViewButton).filter(identity).startWith(null)
-  const metaInfoStream$ = parseUrlResponse.filter((ans) => ans.parseSuccess).startWith(null)
-  const vdom$ = xs.combine(metaInfoStream$, sourcesPanelButton$).map(titleBar)
+  const expandedSources = intent(sources)
+  const state$ = model(expandedSources)
+  const vdom$ = view(state$)
   return {
     DOM: vdom$,
-    isPanelOpen: isPanelOpen$
+    isPanelOpen$: expandedSources.isPanelOpen$
   }
 }
 

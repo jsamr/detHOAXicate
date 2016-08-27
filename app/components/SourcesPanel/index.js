@@ -6,11 +6,11 @@ function intent (sources) {
 }
 
 function model (sources) {
-  const { parseUrlResponse, parseUrlLoading, openPanel } = sources
+  const { parseUrlResponse$, parseUrlLoading$, isPanelOpen$ } = sources
   return xs.combine(
-    parseUrlResponse.startWith(null),
-    parseUrlLoading,
-    openPanel
+    parseUrlResponse$.startWith(null),
+    parseUrlLoading$,
+    isPanelOpen$
   ).map(([articleRep, isLoading, isPanelOpen]) => ({ articleRep, isLoading, isPanelOpen }))
 }
 
@@ -31,15 +31,7 @@ function view (state$) {
 }
 
 function SourcesPanel (sources) {
-  const { parseUrlResponse, parseUrlLoading, parseUrlError, openPanel } = sources
   const state$ = model(sources)
-  // const articleRepVdom$ = xs.combine(
-  //   parseUrlResponse.startWith(null),
-  //   parseUrlLoading,
-  //   openPanel
-  // ).map(view)
-  // merge errors mapped to null so that the previous diagram does not display upon error
-  // const vdom$ = xs.merge(articleRepVdom$, parseUrlError.map((e) => null)).startWith(null)
   const vdom$ = view(state$)
   return {
     DOM: vdom$
