@@ -50,10 +50,48 @@ npm start
 npm test
 ```
 
-### Contributing
+## Contributing
 
 [![JavaScript Style Guide](https://cdn.rawgit.com/feross/standard/master/badge.svg)](https://github.com/feross/standard)
 
+
+### Guidelines
+The UI framework used is [cyclejs](http://cycle.js.org/).  
+
+#### Streams
+The project is configured to use [xstream](http://staltz.com/xstream/), very similar to RxJS but suits best for cyclejs.  
+
+- Stream names must always end with a `$`.
+
+#### Components
+
+Here is a set of rules to follow when you are writing [Components](http://cycle.js.org/components.html).  
+This guideline follows the [Model View Intent](http://cycle.js.org/model-view-intent.html) architecture with some little arrangements.  
+
+- A Component must always follow the [Components](http://cycle.js.org/components.html) conventions.
+- The main component function, i.e. the exported function must use up to 4 functions :
+    - [optional] `intent` : `(DOM) => sources` This function represents the intentions of the user through interactions.
+    - [optional] `transform` : `(sources)` => `sources` This function represents transformations applied to sources and intents to create new streams.
+    - [mandatory] `model` : `(sources) => $stream` This function turns sources to a unique stream which elements will be the input of the `view` function.
+    - [mandatory] `view` : `(data) => vnode` This function eats data (elements of the `state$` stream created with `model`) and outputs virtual dom elements.
+    
+A typicall Component function will look like following: 
+
+```javascript
+function MyComponent (sources) {
+  const intents = intent(sources.DOM)
+  const transformedSources = transform({ ...intents, ...sources })
+  const state$ = model(transformedSources)
+  const vdom$ = state$.map(view)
+  return {
+    DOM: vdom$,
+    isOpen$: intents.buttonState$
+  }
+}
+```
+
+
+### Git
 Before any commit, you MUST : 
 
 - Run a `npm test` command that succeed. The test command also run eslint to validate code style (compliance with JS Standard Code Style, see above badge.)

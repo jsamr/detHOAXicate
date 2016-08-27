@@ -1,7 +1,7 @@
 import notFalsy from 'lodash/identity'
 
-function Parse ({ selectedUrl$ }) {
-  const request$ = selectedUrl$.filter(notFalsy).map(url => ({
+function Parse ({ url$ }) {
+  const request$ = url$.filter(notFalsy).map(url => ({
     url: '/api/parse',
     method: 'POST',
     type: 'application/json',

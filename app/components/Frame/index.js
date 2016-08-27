@@ -8,8 +8,7 @@ function renderExternalSite (selectedUrl, attrs) {
     sandbox: undefined,
     frameBorder: '0',
     ...attrs
-    }
-  })
+  }})
 }
 
 function renderFallback (attrs) {
@@ -51,13 +50,9 @@ function renderReadModeArticle (htmlString, attrs) {
   return vdom
 }
 
-function renderFrame ({ innerHtml, selectedUrl, readModeOn, isPanelOpen }) {
+function view ({ innerHtml, selectedUrl, readModeOn, isPanelOpen }) {
   const attrs = isPanelOpen ? { class: 'is-collapsed' } : { class: 'is-expanded' }
   return readModeOn ? renderReadModeArticle(innerHtml, attrs) : (selectedUrl ? renderExternalSite(selectedUrl, attrs) : renderFallback(attrs))
-}
-
-function view (state$) {
-  return state$.map(renderFrame).startWith(renderFallback())
 }
 
 function model (sources) {
@@ -78,7 +73,7 @@ function model (sources) {
  */
 function Frame (sources) {
   const state$ = model(sources)
-  const vdom$ = view(state$)
+  const vdom$ = state$.map(view).startWith(renderFallback())
   return {
     DOM: vdom$
   }

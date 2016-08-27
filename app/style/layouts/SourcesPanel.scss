@@ -13,6 +13,7 @@ $SourcesPanel_header-color: black;
   height: $SourcesPanel_header-height;
   color: $SourcesPanel_header-color;
   z-index: 1;
+  position: relative;
   background: $article-nodes-background;
   .title {
     font-size: $SourcesPanel_header-font-size;
@@ -32,6 +33,7 @@ $SourcesPanel_header-color: black;
   position: relative;
   overflow: auto;
   > #SourcesView {
+    top: $SourcesPanel_header-height;
     @extend %SourcesView;
   }
   // states

@@ -5,12 +5,13 @@ $SourcesView-color: white;
 
 %SourcesView {
   position: absolute;
-  margin:auto;
-  padding: 30px;
   left:0;
-  top:0;
+  right:0;
+  bottom:0;
+  padding: 30px;
   transition: $default-transitions;
   opacity: 0;
   background: $SourcesView-background;
   color: $SourcesView-color;
+  margin: 0;
 }

@@ -8,10 +8,10 @@ const toggleSourcesPanelViewButton = makeToggleButton(
   { label: 'OPEN SOURCES PANEL', icon: '.fa.fa-pagelines' }
 )
 
-function renderTitleBar ({ ans, isSourcesPanelOpen }) {
+function view ({ ans, isSourcesPanelOpen }) {
   const { metaInfo, url } = ans || {}
   const { title } = metaInfo || {}
-  return div('#TitleBar',  { attrs: { class: metaInfo ? 'expanded' : 'collapsed' } }, [
+  return div('#TitleBar', { attrs: { class: metaInfo ? 'expanded' : 'collapsed' } }, [
     div('.title', [
       title || '?[Title not found]',
       a('#OpenLinkNewTab', { attrs: { class: 'link', href: url, target: '_blank' } }, [ i('.fa.fa-external-link') ])
@@ -22,10 +22,9 @@ function renderTitleBar ({ ans, isSourcesPanelOpen }) {
   ])
 }
 
-function intent ({ DOM, ...sources }) {
-  return  {
-    isPanelOpen$: DOM.select('#SourceTreeToggle').events('click').fold((acc) => !acc, false),
-    ...sources
+function intent (DOM) {
+  return {
+    isPanelOpen$: DOM.select('#SourceTreeToggle').events('click').fold((acc) => !acc, false)
   }
 }
 
@@ -38,17 +37,14 @@ function model (sources) {
   ).map(([ ans, isSourcesPanelOpen ]) => ({ ans, isSourcesPanelOpen }))
 }
 
-function view (state$) {
-  return state$.map(renderTitleBar)
-}
-
 function TitleBar (sources) {
-  const expandedSources = intent(sources)
-  const state$ = model(expandedSources)
-  const vdom$ = view(state$)
+  const intents = intent(sources.DOM)
+  const mergedSources = { ...intents, ...sources }
+  const state$ = model(mergedSources)
+  const vdom$ = state$.map(view)
   return {
     DOM: vdom$,
-    isPanelOpen$: expandedSources.isPanelOpen$
+    isPanelOpen$: mergedSources.isPanelOpen$
   }
 }
 

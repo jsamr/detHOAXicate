@@ -1,6 +1,9 @@
 import { input, div, span, i } from '@cycle/dom'
-import { isValidURL } from 'shared/validation'
 import xs from 'xstream'
+
+import Parse from 'app/api/Parse'
+import { isValidURL } from 'shared/validation'
+import { targetValue } from 'app/dom-utils'
 
 function renderUrlValidation (url) {
   if (url) return isValidURL(url) ? i('.success .fa .fa-check') : i('.error .fa .fa-warning')
@@ -22,29 +25,22 @@ function renderReadModeToggle (readModeOn) {
   return div('#ReadModeToggle', { attrs: { class: `UrlSearch_feedback ${readModeOn ? '' : 'disabled'}` } }, [ i('.icon-book-open') ])
 }
 
-function intent ({ DOM, inputValue, ...sources }) {
+function transform (sources) {
+  const { parseUrlError$, parseUrlResponse$, selectedUrlSanitized$ } = sources
+  const parseUrlReq$ = Parse({ url$: selectedUrlSanitized$ }).HTTP
+  const parseUrlLoading$ = xs.merge(
+    parseUrlReq$.mapTo(true),
+    parseUrlError$.mapTo(false),
+    parseUrlResponse$.mapTo(false)
+  ).startWith(false)
   return {
-    isReadModeOn$: DOM.select('#ReadModeToggle').events('click').fold((acc, next) => !acc, true),
-    selectedUrl$: inputValue.filter(isValidURL).startWith(null),
-    inputValue,
+    parseUrlLoading$,
+    parseUrlReq$,
     ...sources
   }
 }
 
-function model (sources) {
-  const { inputValue, parseUrlLoading$, parseUrlError$, isReadModeOn$ } = sources
-  const feedbackDom$ = xs.merge(inputValue.mapTo(null), parseUrlError$.map(renderErrorIcon))
-  const state$ = xs.combine(
-    inputValue,
-    parseUrlLoading$,
-    parseUrlError$.startWith(null),
-    feedbackDom$,
-    isReadModeOn$
-  ).map(([url, isLoading, error, feedback, readModeOn]) => ({ url, isLoading, error, feedback, readModeOn }))
-  return state$
-}
-
-function renderHeader ({ url, isLoading, error, feedback, readModeOn }) {
+function view ({ url, isLoading, error, feedback, readModeOn }) {
   return div('#Header', [
     div('#Title', [ 'detHOAXicate', div('#Subtitle', 'the hoax decompiler') ]),
     div('#UrlSearch', [
@@ -58,18 +54,42 @@ function renderHeader ({ url, isLoading, error, feedback, readModeOn }) {
   ])
 }
 
-function view (state$) {
-  return state$.map(renderHeader)
+function intent (DOM) {
+  const selectedUrl$ = DOM.select('#UrlInput').events('input').map(targetValue).startWith('')
+  const isReadModeOn$ = DOM.select('#ReadModeToggle').events('click').fold((acc, next) => !acc, true)
+  const selectedUrlSanitized$ = selectedUrl$.filter(isValidURL).startWith(null)
+  return {
+    isReadModeOn$,
+    selectedUrl$,
+    selectedUrlSanitized$
+  }
+}
+
+function model (sources) {
+  const { selectedUrl$, parseUrlLoading$, parseUrlError$, isReadModeOn$ } = sources
+  const feedbackDom$ = xs.merge(selectedUrl$.mapTo(null), parseUrlError$.map(renderErrorIcon))
+  const state$ = xs.combine(
+    selectedUrl$,
+    parseUrlLoading$,
+    parseUrlError$.startWith(null),
+    feedbackDom$,
+    isReadModeOn$
+  ).map(([url, isLoading, error, feedback, readModeOn]) => ({ url, isLoading, error, feedback, readModeOn }))
+  return state$
 }
 
 function Header (sources) {
-  const expandedSources = intent(sources)
-  const state$ = model(expandedSources)
-  const vdom$ = view(state$)
+  const intents = intent(sources.DOM)
+  const transformedSources = transform({ ...intents, ...sources })
+  const state$ = model(transformedSources)
+  const vdom$ = state$.map(view)
   return {
     DOM: vdom$,
-    selectedUrl: expandedSources.selectedUrl$,
-    isReadModeOn$: expandedSources.isReadModeOn$
+    HTTP: transformedSources.parseUrlReq$,
+    selectedUrl$: transformedSources.selectedUrl$,
+    selectedUrlSanitized$: transformedSources.selectedUrlSanitized$,
+    parseUrlLoading$: transformedSources.parseUrlLoading$,
+    isReadModeOn$: transformedSources.isReadModeOn$
   }
 }
 

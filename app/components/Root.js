@@ -5,9 +5,6 @@ import TitleBar from './TitleBar'
 import SourcesPanel from './SourcesPanel'
 import xs from 'xstream'
 import { div } from '@cycle/dom'
-import Parse from '../api/Parse'
-import { targetValue } from '../dom-utils'
-import { isValidURL } from 'shared/validation'
 import R from 'ramda'
 import { splitHttpScope } from 'app/http-utils'
 
@@ -17,40 +14,35 @@ function extractRootArticleInnherHtml (articleRepFlow$) {
   return articleRepFlow$.filter(hasSucceedParsing).map(getInnerHtml)
 }
 
-function intent (DOM, HTTP) {
+function transform (sources) {
+  const { DOM, HTTP } = sources
   const { parseUrlResponse$, parseUrlError$ } = splitHttpScope('parse', HTTP)
-  const selectedUrl$ = DOM.select('#UrlInput').events('input').map(targetValue).startWith('')
-  const selectedUrlSanitized$ = selectedUrl$.filter(isValidURL).startWith(null)
   const rootArticleInnherHtmlStream$ = parseUrlResponse$.compose(extractRootArticleInnherHtml)
-  const parseUrlReq$ = Parse({ selectedUrl$: selectedUrlSanitized$ }).HTTP
-  const parseUrlLoading$ = xs.merge(parseUrlReq$.mapTo(true), parseUrlError$.mapTo(false), parseUrlResponse$.mapTo(false)).startWith(false)
+  const header = Header({ DOM, parseUrlError$, parseUrlResponse$ })
+  const { selectedUrlSanitized$, parseUrlLoading$, isReadModeOn$ } = header
+  const canShowDiagram$ = xs.combine(parseUrlLoading$, parseUrlResponse$).map(([isLoading, articleRep]) => !isLoading && !!articleRep)
+  const titleBar = TitleBar({ DOM, parseUrlResponse$, canShowDiagram$ })
+  const isPanelOpen$ = titleBar.isPanelOpen$
+  const frame = Frame({ selectedUrl$: selectedUrlSanitized$, rootArticleInnherHtmlStream$, isReadModeOn$, isPanelOpen$ })
+  const sourcesPanel = SourcesPanel({ DOM, parseUrlResponse$, parseUrlLoading$, isPanelOpen$ })
+  const footer = Footer({ DOM })
   return {
-    parseUrlResponse$,
-    rootArticleInnherHtmlStream$,
-    parseUrlError$,
-    selectedUrl$,
-    selectedUrlSanitized$,
-    parseUrlReq$,
-    parseUrlLoading$
+    headerVdom$: header.DOM,
+    titleBarVdom$: titleBar.DOM,
+    frameVdom$: frame.DOM,
+    sourcesPanelVdom$: sourcesPanel.DOM,
+    footerVdom$: footer.DOM,
+    HTTP: header.HTTP
   }
 }
 
-function model (sources) {
-  const { DOM, selectedUrl$, selectedUrlSanitized$, parseUrlResponse$, parseUrlError$, rootArticleInnherHtmlStream$, parseUrlLoading$ } = sources
-  const canShowDiagram$ = xs.combine(parseUrlLoading$, parseUrlResponse$).map(([isLoading, articleRep]) => !isLoading && !!articleRep)
-  const header = Header({ DOM, inputValue: selectedUrl$, parseUrlLoading$, parseUrlError$ })
-  const titleBar = TitleBar({ DOM, parseUrlResponse$, canShowDiagram$ })
-  const isPanelOpen$ = titleBar.isPanelOpen$
-  const isReadModeOn$ = header.isReadModeOn$
-  const frame = Frame({ selectedUrl$: selectedUrlSanitized$, rootArticleInnherHtmlStream$, isReadModeOn$, isPanelOpen$ })
-  const sourcesPanel = SourcesPanel({ parseUrlResponse$, parseUrlLoading$, isPanelOpen$ })
-  const footer = Footer({ DOM })
+function model ({ headerVdom$, titleBarVdom$, frameVdom$, sourcesPanelVdom$, footerVdom$ }) {
   return xs.combine(
-    header.DOM,
-    titleBar.DOM,
-    frame.DOM,
-    sourcesPanel.DOM,
-    footer.DOM
+    headerVdom$,
+    titleBarVdom$,
+    frameVdom$,
+    sourcesPanelVdom$,
+    footerVdom$
   ).map(([headerDom, titleBarDom, frameDom, sourcesTreeDom, footerDom]) => ({
     headerDom,
     titleBarDom,
@@ -60,24 +52,24 @@ function model (sources) {
   }))
 }
 
-function view (state$) {
-  return state$.map(({ headerDom, titleBarDom, frameDom, sourcesTreeDom, footerDom }) => div('#Root', [
+function view ({ headerDom, titleBarDom, frameDom, sourcesTreeDom, footerDom }) {
+  return div('#Root', [
     headerDom,
     titleBarDom,
     frameDom,
     sourcesTreeDom,
     footerDom
-  ]))
+  ])
 }
 
-function Root ({ DOM, HTTP }) {
-  const transformedSources = { ...intent(DOM, HTTP), DOM }
-  const { parseUrlReq$ } = transformedSources
+function Root (sources) {
+  const transformedSources = transform(sources)
   const state$ = model(transformedSources)
-  const vdom$ = view(state$)
+  const vdom$ = state$.map(view)
+  console.info(transformedSources.HTTP)
   return {
     DOM: vdom$,
-    HTTP: parseUrlReq$
+    HTTP: transformedSources.HTTP
   }
 }
 
