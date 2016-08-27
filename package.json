@@ -43,7 +43,7 @@
     "ramda": "^0.22.1",
     "readability": "file:./node_local_modules/readability/",
     "validator": "^5.5.0",
-    "xstream": "^5.3.6"
+    "xstream": "^6.1.0"
   },
   "devDependencies": {
     "autoprefixer": "^6.0.3",

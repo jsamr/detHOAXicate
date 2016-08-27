@@ -19,7 +19,7 @@ Those are *standards* this application should tend to comply with
 
 ### Installing
 
-Firstn, start with those commands
+First, start with those commands
 
 ```
 npm clone https://github.com/sveinburne/detHOAXicate.git
@@ -56,7 +56,9 @@ npm test
 
 
 ### Guidelines
-The UI framework used is [cyclejs](http://cycle.js.org/).  
+
+- The UI framework used is [cyclejs](http://cycle.js.org/).
+- You *should* use [**the chrome extension**](https://chrome.google.com/webstore/detail/cyclejs/dfgplfmhhmdekalbpejekgfegkonjpfp?hl=en-US) for debugging purpose, and always have a graph of the app streams as a support to reason the app.
 
 #### Streams
 The project is configured to use [xstream](http://staltz.com/xstream/), very similar to RxJS but suits best for cyclejs.  
@@ -72,7 +74,7 @@ This guideline follows the [Model View Intent](http://cycle.js.org/model-view-in
 - The main component function, i.e. the exported function must use up to 4 functions :
     - [optional] `intent` : `(DOM) => sources` This function represents the intentions of the user through interactions.
     - [optional] `transform` : `(sources)` => `sources` This function represents transformations applied to sources and intents to create new streams.
-    - [mandatory] `model` : `(sources) => $stream` This function turns sources to a unique stream which elements will be the input of the `view` function.
+    - [mandatory] `model` : `(sources) => stream$` This function turns sources to a unique stream which elements will be the input of the `view` function.
     - [mandatory] `view` : `(data) => vnode` This function eats data (elements of the `state$` stream created with `model`) and outputs virtual dom elements.
     
 A typicall Component function will look like following: 
@@ -141,6 +143,7 @@ You can play with the API with postman [when the app has launched locally](#runn
 | standardsCompliance | **[StandardsCompliance](#standards-compliance-o)** | information about the level of compliance with web standards, see below |
 | socialLinks | **[string, [URL](https://url.spec.whatwg.org//)]** | An array of social media links embedded in this article|
 | internalArticleCandidates | **[string, [URL](https://url.spec.whatwg.org//)]** | An array of probable articles URL referred inside the website |
+
 <a name='article-meta-info-o'></a>
 ##### ArticleMetaInfo object  
 
