@@ -26,6 +26,12 @@ const appConfig = {
       'process.env.NODE_ENV': JSON.stringify('development')
     })
   ],
+  resolve: {
+    alias: {
+      shared: path.resolve(__dirname, 'shared'),
+      app: path.resolve(__dirname, 'app')
+    }
+  },
   module: {
     loaders: [{
       test: /\.jsx?$/,
