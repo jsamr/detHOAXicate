@@ -66,7 +66,6 @@ function Root (sources) {
   const transformedSources = transform(sources)
   const state$ = model(transformedSources)
   const vdom$ = state$.map(view)
-  console.info(transformedSources.HTTP)
   return {
     DOM: vdom$,
     HTTP: transformedSources.HTTP

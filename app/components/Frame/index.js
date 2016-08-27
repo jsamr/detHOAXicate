@@ -1,27 +1,29 @@
 import { iframe, div } from '@cycle/dom'
 import xs from 'xstream'
 
-function renderExternalSite (selectedUrl, attrs) {
-  return iframe('#Frame', { attrs: {
-    src: selectedUrl,
-    name: 'iframe',
-    sandbox: undefined,
-    frameBorder: '0',
-    ...attrs
+function renderExternalSite (selectedUrl) {
+  return [ iframe('#Article', {
+    attrs: {
+      src: selectedUrl,
+      name: 'iframe',
+      sandbox: undefined,
+      frameBorder: '0'
   }})
+  ]
 }
 
-function renderFallback (attrs) {
-  return div('#Frame', { attrs }, [
+function renderFallback () {
+  return [
     div('Welcome to detHOAXicate!'),
     div('Paste a link to start detHOAXicating information')
-  ])
+  ]
 }
 
-function renderReadModeArticle (htmlString, attrs) {
+function renderReadModeArticle (htmlString) {
   // this function injects html in the iframe
   const injectArticleReadModeIframe = (vnode) => {
     const doc = vnode.elm.contentWindow.document
+    // TODO prevent costly (+ blinking screen) updates when the component class changes
     doc.open()
     doc.write(htmlString)
     doc.close()
@@ -33,7 +35,7 @@ function renderReadModeArticle (htmlString, attrs) {
     doc.head.appendChild(link)
   }
   let vdom
-  vdom = div('#Frame', { attrs }, [
+  vdom = [
     div('#Article', [
       iframe('#Article_body', {
         hook: {
@@ -46,19 +48,20 @@ function renderReadModeArticle (htmlString, attrs) {
         }
       })
     ])
-  ])
+  ]
   return vdom
 }
 
 function view ({ innerHtml, selectedUrl, readModeOn, isPanelOpen }) {
   const attrs = isPanelOpen ? { class: 'is-collapsed' } : { class: 'is-expanded' }
-  return readModeOn ? renderReadModeArticle(innerHtml, attrs) : (selectedUrl ? renderExternalSite(selectedUrl, attrs) : renderFallback(attrs))
+  const innerElem = innerHtml ? (readModeOn ? renderReadModeArticle(innerHtml) : renderExternalSite(selectedUrl)) : renderFallback()
+  return div('#Frame', { attrs }, innerElem)
 }
 
 function model (sources) {
   const { selectedUrl$, rootArticleInnherHtmlStream$, isReadModeOn$, isPanelOpen$ } = sources
   return xs.combine(
-    rootArticleInnherHtmlStream$,
+    rootArticleInnherHtmlStream$.startWith(null),
     selectedUrl$,
     isReadModeOn$,
     isPanelOpen$
@@ -73,7 +76,7 @@ function model (sources) {
  */
 function Frame (sources) {
   const state$ = model(sources)
-  const vdom$ = state$.map(view).startWith(renderFallback())
+  const vdom$ = state$.map(view)
   return {
     DOM: vdom$
   }
