@@ -25,7 +25,9 @@ function view ({ articleRep, isLoading, isPanelOpen, sourcesViewDom, headerDom }
     }
   }, [
     headerDom,
-    sourcesViewDom
+    div('#SourcesView_container', [
+      sourcesViewDom
+    ])
   ])
 }
 

@@ -8,14 +8,15 @@
   justify-content: space-between;
   flex-shrink: 0;
   > #Title {
+    flex-shrink: 0;
     padding-left: 10px;
     text-align: center;
-    font-size: 45px;
+    font-size: 35px;
     margin-right: 10px;
     > #Subtitle {
-      font-size: 15px;
-      word-spacing: 8px;
-      letter-spacing: 5px;
+      font-size: 13px;
+      word-spacing: 7px;
+      letter-spacing: 4px;
     }
   }
   > #UrlSearch {
@@ -27,15 +28,15 @@
     margin: 10px;
     width: 80vw;
     max-width: 1200px;
-    padding: 10px;
+    padding: 5px;
     border-radius: 30px;
     background: white;
     #UrlInput {
       flex-grow: 1;
-      font-size: 18px;
+      font-size: 14.5px;
       background: inherit;
       text-align: center;
-      color: $info-color;
+      color: black;
     }
     #ReadModeToggle {
       cursor: pointer;

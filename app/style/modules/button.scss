@@ -13,16 +13,17 @@ $button-icon-color: #131669;
 
 .button {
   @extend %card-1;
+  font-family: $base-font;
   display: flex;
   align-items: center;
   justify-content: flex-start;
   font-size: $button-font-size;
   width: $button-width;
-  background: white;
-  margin: 5px;
-  &+.button {
-    margin-left: 10px;
+  background: rgba(222, 222, 255, 0.6);
+  &:hover {
+    background: rgb(222, 222, 255);
   }
+  margin: 5px;
   > i {
     position: relative;
     font-size: $button-icon-font-size;

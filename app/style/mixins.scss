@@ -9,10 +9,4 @@
 
 @mixin cardlike ($place) {
   box-shadow: $card-box-shadow;
-  @if $place == bottom {
-    margin-bottom: 3px;
-  }
-  @if $place == top {
-    margin-top: 3px;
-  }
 }

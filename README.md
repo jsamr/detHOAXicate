@@ -15,6 +15,10 @@ Those are *standards* this application should tend to comply with
 
 [open graph article](https://developers.facebook.com/docs/reference/opengraph/object-type/article/)
 
+### dublin core
+
+[dublin core DC meta tags](http://dublincore.org/documents/dcq-html/)
+
 ## Developers
 
 ### Installing

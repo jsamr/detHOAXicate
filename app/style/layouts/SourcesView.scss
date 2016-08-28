@@ -4,11 +4,6 @@ $SourcesView-background: 'transparent';
 $SourcesView-color: white;
 
 %SourcesView {
-  position: absolute;
-  left:0;
-  right:0;
-  bottom:0;
-  padding: 30px;
   transition: $default-transitions;
   opacity: 0;
   background: $SourcesView-background;

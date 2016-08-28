@@ -2,10 +2,6 @@
 @import '../mixins';
 @import './SourcesView';
 
-$SourcesPanel_header-height: 23px;
-$SourcesPanel_header-font-size: 20px;
-$SourcesPanel_header-color: $article-nodes-color;
-
 %SourcesPanel_header {
   flex-shrink: 0;
   transition: $default-transitions;
@@ -15,14 +11,30 @@ $SourcesPanel_header-color: $article-nodes-color;
   z-index: 1;
   position: relative;
   background: $article-nodes-background;
+  overflow: visible;
   .title {
-    font-size: $SourcesPanel_header-font-size;
     text-align: center;
+    color: #255a70;
+    background: #a3bf8a;
+    border-radius: 50%;
+    border: #272727 solid 2px;
+    z-index: 1;
+    position: absolute;
+    top:-15px;
+    transition: $default-transitions;
+    font-size: $SourcesPanel_header-height;
+    width: $SourcesPanel_header-height;
+    height: $SourcesPanel_header-height;
+    padding: 4px;
+    cursor: pointer;
+    &:hover {
+      background: lighten(#a3bf8a, 20);
+    }
   }
 }
 
 %SourcesPanel {
-  @include cardlike(top);
+  @include cardlike(none);
   display: flex;
   flex-shrink: 0;
   flex-flow: column nowrap;
@@ -31,30 +43,51 @@ $SourcesPanel_header-color: $article-nodes-color;
   max-width: 100%;
   transition: $default-transitions;
   position: relative;
-  overflow: auto;
+  overflow: visible;
   background: $frame-bg;
-  > #SourcesView {
+  > #SourcesView_container {
+    overflow: auto;
+    position: absolute;
     top: $SourcesPanel_header-height;
+    left:0;
+    right:0;
+    bottom:0;
+    padding: 30px;
+  }
+  #SourcesView {
     @extend %SourcesView;
   }
   // states
   &.is-small {
     flex-basis: $SourcesPanel_header-height;
-    overflow: hidden;
     flex-grow: 0.0001;
   }
   &.is-collapsed {
     flex-basis: 0;
-    overflow: hidden;
     flex-grow: 0.0001;
+    overflow: hidden;
   }
   &.is-expanded {
     flex-grow: 100;
-    > #SourcesView {
+    #SourcesView {
       opacity:1;
+    }
+    > #SourcesPanel_header .title {
+      font-size: $SourcesPanel_header-font-size;
+      width: $SourcesPanel_header-font-size;
+      height: $SourcesPanel_header-font-size;
+      padding: 7px;
+    }
+  }
+  &.is-collapsed, &.is-small {
+    > #SourcesView_container {
+      overflow: hidden !important;
+      height: 0;
+      top:0;
+      padding: 0;
     }
   }
   > #SourcesPanel_header {
-     @extend %SourcesPanel_header;
+    @extend %SourcesPanel_header;
   }
 }

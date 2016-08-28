@@ -1,8 +1,8 @@
 import Header from './Header'
 import Frame from './Frame'
-import Footer from './Footer'
 import TitleBar from './TitleBar'
 import SourcesPanel from './SourcesPanel'
+
 import xs from 'xstream'
 import { div } from '@cycle/dom'
 import R from 'ramda'
@@ -20,45 +20,40 @@ function transform (sources) {
   const articleInnerHtml$ = parseUrlResponse$.compose(extractRootArticleInnherHtml)
   const header = Header({ DOM, parseUrlError$, parseUrlResponse$ })
   const { selectedUrlSanitized$, parseUrlLoading$, isReadModeOn$ } = header
-  const canShowDiagram$ = xs.combine(parseUrlLoading$, parseUrlResponse$).map(([isLoading, articleRep]) => !isLoading && !!articleRep)
+  const canShowDiagram$ = xs.combine(parseUrlLoading$, parseUrlResponse$).map(([isLoading, articleRep]) => !isLoading && !!articleRep).startWith(false)
   const titleBar = TitleBar({ DOM, parseUrlResponse$, canShowDiagram$ })
-  const isPanelOpen$ = titleBar.isPanelOpen$
-  const frame = Frame({ selectedUrl$: selectedUrlSanitized$, articleInnerHtml$, isReadModeOn$, isPanelOpen$ })
+  const frame = Frame({ DOM, selectedUrl$: selectedUrlSanitized$, articleInnerHtml$, isReadModeOn$, canShowDiagram$, parseUrlResponse$ })
+  const isPanelOpen$ = frame.isPanelOpen$
   const sourcesPanel = SourcesPanel({ DOM, parseUrlResponse$, parseUrlLoading$, isPanelOpen$ })
-  const footer = Footer({ DOM })
   return {
     headerVdom$: header.DOM,
     titleBarVdom$: titleBar.DOM,
     frameVdom$: frame.DOM,
     sourcesPanelVdom$: sourcesPanel.DOM,
-    footerVdom$: footer.DOM,
     HTTP: header.HTTP
   }
 }
 
-function model ({ headerVdom$, titleBarVdom$, frameVdom$, sourcesPanelVdom$, footerVdom$ }) {
+function model ({ headerVdom$, titleBarVdom$, frameVdom$, sourcesPanelVdom$ }) {
   return xs.combine(
     headerVdom$,
     titleBarVdom$,
     frameVdom$,
     sourcesPanelVdom$,
-    footerVdom$
-  ).map(([headerDom, titleBarDom, frameDom, sourcesTreeDom, footerDom]) => ({
+  ).map(([headerDom, titleBarDom, frameDom, sourcesTreeDom]) => ({
     headerDom,
     titleBarDom,
     frameDom,
-    sourcesTreeDom,
-    footerDom
+    sourcesTreeDom
   }))
 }
 
-function view ({ headerDom, titleBarDom, frameDom, sourcesTreeDom, footerDom }) {
+function view ({ headerDom, titleBarDom, frameDom, sourcesTreeDom }) {
   return div('#Root', [
     headerDom,
     titleBarDom,
     frameDom,
-    sourcesTreeDom,
-    footerDom
+    sourcesTreeDom
   ])
 }
 

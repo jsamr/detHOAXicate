@@ -1,9 +1,9 @@
 $public-fonts-path: './fonts/';
 
-// Patterns
+/* Patterns */
 $arrow-pattern: 'data:image/svg+xml;base64,CiAgPHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMDAlJyBoZWlnaHQ9JzMwJz4KICAgIDxkZWZzPgogICAgCTxwYXR0ZXJuIHBhdHRlcm5Vbml0cz0ndXNlclNwYWNlT25Vc2UnIGlkPSdjJyB3aWR0aD0nMTUnIGhlaWdodD0nMzAnIHg9JzAnIHk9JzAnIHZpZXdCb3g9JzAgMCA1IDEwJz4KICAgIAkJPHBhdGggZmlsbC1vcGFjaXR5PScwJyBzdHJva2U9JyNhZDc1NGYnIHN0cm9rZS13aWR0aD0nMC4wNicgZD0nTS0yLDFMNywxME0tMiw2TDcsMTVNLTIsLTRMNyw1Jy8+CiAgICAJPC9wYXR0ZXJuPgogICAgCTxwYXR0ZXJuIHBhdHRlcm5Vbml0cz0ndXNlclNwYWNlT25Vc2UnIGlkPSdjMicgd2lkdGg9JzE1JyBoZWlnaHQ9JzMwJyB4PScxMDAlJyB5PScwJyB2aWV3Qm94PScwIDAgNSAxMCc+CiAgICAJCTxwYXRoIGZpbGwtb3BhY2l0eT0nMCcgc3Ryb2tlPScjYWQ3NTRmJyBzdHJva2Utd2lkdGg9JzAuMDYnIGQ9J003LDFMLTIsMTBNNyw2TC0yLDE1TTcsLTRMLTIsNScvPgogICAgCTwvcGF0dGVybj4KICAgIDwvZGVmcz4KICAgIDxyZWN0IHdpZHRoPSc1MCUnIGhlaWdodD0nMTAwJScgZmlsbD0ndXJsKCNjKScvPgogICAgPHJlY3QgeD0nNTAlJyB3aWR0aD0nNTAlJyBoZWlnaHQ9JzEwMCUnIGZpbGw9J3VybCgjYzIpJy8+CiAgPC9zdmc+CiAg';
 
-// Theme
+/* Theme */
 $default-placeholder-color: rgba(111, 78, 105, 0.7);
 $default-links-color: rgba(111, 78, 105, 0.7);
 $info-color: #1c7bff;
@@ -12,17 +12,34 @@ $success-color: #008e00;
 $app-background: #d9e2f3;
 $default-transitions: all 0.6s ease;
 $article-font-color: whitesmoke;
-$article-href-color: #317f9a;
+$article-href-color: rgb(205, 197, 255);
 $frame-bg-color: #292827;
 $frame-bg: $frame-bg-color url($arrow-pattern);
 $article-nodes-background: lighten($frame-bg-color, 15) url($arrow-pattern);
 $article-nodes-color: $article-font-color;
 
-// Spaces
-$Header-height: 80px;
+/* Effects */
 $card-box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0, 0, 0, 0.51);
 
-// Fonts
+/* Fonts  */
 $article-content-font: 'Libertine', serif;
 $article-title-font: 'LibertineDisplay', serif;
 $base-font: 'Bariol', sans-serif;
+
+/* Components */
+
+// Header
+$Header-height: 55px;
+
+// Footer
+$Footer_font-size: 14px;
+$Footer_height: 20px;
+$Footer_color: #536b7e;
+
+// ArticleActions
+$ArticleActions_width: 220px;
+
+// SourcesPanel
+$SourcesPanel_header-height: 30px;
+$SourcesPanel_header-font-size: 45px;
+$SourcesPanel_header-color: $article-nodes-color;

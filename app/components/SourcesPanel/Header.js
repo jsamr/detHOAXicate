@@ -1,9 +1,9 @@
-import { div, span } from '@cycle/dom'
+import { div, span, i } from '@cycle/dom'
 import xs from 'xstream'
 
 function view () {
   return xs.of(div('#SourcesPanel_header', { attrs: { class: 'flex-inline-centered' } }, [
-    span('.title', '{ Sources Panel }')
+    span('#SourcesPanelToggle', { attrs: { class: 'title' } }, [ i('.fa.fa-pagelines') ])
   ]))
 }
 

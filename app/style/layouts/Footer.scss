@@ -1,9 +1,5 @@
 @import '../config';
 
-$Footer_font-size: 14px;
-$Footer_height: 20px;
-$Footer_color: #536b7e;
-
 %Footer {
   background: $app-background url($arrow-pattern);
   height: $Footer_height;

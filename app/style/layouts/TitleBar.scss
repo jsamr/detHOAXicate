@@ -13,6 +13,8 @@
   color: $article-nodes-color;
   .title {
     font-size: 35px;
+    position: relative;
+    z-index: 10;
     font-family: 'LibertineDisplay', serif;
     .link {
       margin-left: 10px;
@@ -20,13 +22,13 @@
   }
   overflow: hidden;
   background: $article-nodes-background;
-  &.expanded {
+  &.is-expanded {
     flex-grow: 1;
-    flex-basis: auto;
+    max-height: 1000px;
   }
-  &.collapsed {
+  &.is-collapsed {
     flex-grow: 0.0001;
-    flex-basis: 0;
+    max-height: 0;
   }
   .actions {
     display: flex;

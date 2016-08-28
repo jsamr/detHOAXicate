@@ -1,21 +1,21 @@
 import xs from 'xstream'
 import { span, a, i } from '@cycle/dom'
 
-function renderFooter () {
-  return span('#Footer', [
+function renderCredits () {
+  return span('#Credits', [
     span('credits to Jules Randolph, Romain Poussier - License MIT '),
     a({ attrs: { href: 'https://github.com/sveinburne/detHOAXicate', target: '_blank' } }, [ i('.fa .fa-github'), 'github' ])
   ])
 }
 
 function view () {
-  return xs.of(renderFooter())
+  return xs.of(renderCredits())
 }
 
-function Footer (/* sources */) {
+function Credits (/* sources */) {
   return {
     DOM: view()
   }
 }
 
-export default Footer
+export default Credits
