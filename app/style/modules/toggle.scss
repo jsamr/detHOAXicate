@@ -3,11 +3,10 @@
 %toggle {
   font-size: 17px;
   background: inherit;
-  cursor: pointer;
-  border-top: black solid 1px;
-  border-left: black solid 1px;
-  border-right: black solid 1px;
   border-radius: 20px 20px 0 0;
+  cursor: pointer;
+  border: 1px solid #7d7d7d;
+  border-bottom-width: 0;
   i {
     padding: 9px;
   }

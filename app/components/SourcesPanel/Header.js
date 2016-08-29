@@ -3,9 +3,9 @@ import xs from 'xstream'
 
 function intent (DOM) {
   const isPanelOpen$ = xs.merge(
-      DOM.select('#SourcesPanelToggle').events('click').fold((acc) => !acc, false),
-      DOM.select('#SourcesPanelIcon').events('click').fold((acc) => !acc, false)
-  ).startWith(false)
+      DOM.select('#SourcesPanelToggle').events('click'),
+      DOM.select('#SourcesPanelIcon').events('click')
+  ).fold((acc) => !acc, false)
   return {
     isPanelOpen$: isPanelOpen$
   }
