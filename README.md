@@ -26,7 +26,7 @@ Those are *standards* this application should tend to comply with
 First, start with those commands
 
 ```
-npm clone https://github.com/sveinburne/detHOAXicate.git
+git clone https://github.com/sveinburne/detHOAXicate.git
 cd detHOAXicate
 git config commit.template ./.gitmessage
 ```
@@ -138,7 +138,7 @@ You can play with the API with postman [when the app has launched locally](#runn
 
 #### Body (json)
 
-*The body is a single **ArticleRepresentation** object, see below*
+_The body is a single **ArticleRepresentation** object, see below_
 
 <a name='article-representation-o'></a>
 ##### ArticleRepresentation object  
