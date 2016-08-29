@@ -14,7 +14,7 @@ $default-transitions: all 0.6s ease;
 $article-font-color: whitesmoke;
 $article-href-color: rgb(205, 197, 255);
 $frame-bg-color: #292827;
-$frame-bg: $frame-bg-color url($arrow-pattern);
+$frame-bg: $frame-bg-color;
 $article-nodes-background: lighten($frame-bg-color, 15) url($arrow-pattern);
 $article-nodes-color: $article-font-color;
 

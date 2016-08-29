@@ -51,6 +51,41 @@
       }
     }
   }
+  > #DepthSelect {
+    position: relative;
+    background: white;
+    border-radius: 5px;
+    > #DepthInput {
+      width: 25px;
+      padding: 12px;
+      text-align: center;
+    }
+    .legend {
+      position: absolute;
+      bottom: 0;
+      font-style: italic;
+      font-size: 14px;
+      left: 37%;
+      padding: 2px;
+      color: #868686;
+    }
+    .modifier {
+      text-align: center;
+      vertical-align: middle;
+      font-size: 16px;
+      width: 18px;
+      height: 18px;
+      padding: 5px;
+      background: gray;
+      color: white;
+      border-radius: 50%;
+      margin: 7px;
+      cursor: pointer;
+      &:hover {
+        background: #4d4d4d;
+      }
+    }
+  }
   > #AnalysisOutput {
     flex-grow: 1;
     margin: 10px;
