@@ -29,6 +29,9 @@
     "templateStrings": true,
     "jsx": true
   },
+  "rules": {
+    "no-useless-rename": 0
+  },
   "plugins": [
     "react"
   ],

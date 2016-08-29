@@ -1,4 +1,4 @@
-import { div, span } from '@cycle/dom'
+import { div } from '@cycle/dom'
 import xs from 'xstream'
 import SourcesView from './SourcesView'
 import Header from './Header'
@@ -30,7 +30,6 @@ function model (sources) {
 }
 
 function view ({ articleRep, isLoading, isPanelOpen, sourcesViewDom, headerDom }) {
-  console.info(arguments)
   const canShowContent = !isLoading && articleRep
   return div('#SourcesPanel', {
     attrs: {

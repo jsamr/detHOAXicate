@@ -5,7 +5,7 @@ import Parse from 'app/api/Parse'
 import { isValidURL } from 'shared/validation'
 import { targetValue } from 'app/dom-utils'
 
-//TODO refactor in sub Components
+// TODO refactor in sub Components
 
 function renderUrlValidation (url) {
   if (url) return isValidURL(url) ? i('.success .fa .fa-check') : i('.error .fa .fa-warning')

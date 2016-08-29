@@ -1,4 +1,4 @@
-import { div, i, a } from '@cycle/dom'
+import { div } from '@cycle/dom'
 
 function view (ans) {
   const { metaInfo } = ans || {}

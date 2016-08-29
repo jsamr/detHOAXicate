@@ -1,0 +1,6 @@
+machine:
+  node:
+    version: 4.2.6
+dependencies:
+  override:
+    - npm run init

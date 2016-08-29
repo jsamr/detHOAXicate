@@ -1,6 +1,7 @@
 # DetHOAXicate - The Hoax Decompiler
 
 [![JavaScript Style Guide](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
+[![CircleCI](https://circleci.com/gh/sveinburne/detHOAXicate/tree/master.svg?style=shield)](https://circleci.com/gh/sveinburne/detHOAXicate/tree/master)
 
 ## Compliance
 
@@ -23,23 +24,18 @@ Those are *standards* this application should tend to comply with
 
 ### Installing
 
+**Make sure you have npm ande node installed in the versions specified in the [package.json](/package.json) file, field "engineStrict".**  
+
 First, start with those commands
 
 ```
 git clone https://github.com/sveinburne/detHOAXicate.git
 cd detHOAXicate
-git config commit.template ./.gitmessage
+npm run init
 ```
 
-Then, you should install eslint `^3.1.0` globally  
-```
-npm i -g eslint@^3.1.0
-```
-
-And install node dependencies with
-```
-npm i
-```
+**Note:** As the script `npm run init` aims to install eslint globally, you might run into trouble if your don't have right access.
+Try `sudo npm run init` instead if errors pop up.
 
 <a name='running'></a>
 ### Running
@@ -52,6 +48,13 @@ npm start
 
 ```
 npm test
+```
+
+### Linting
+
+Code style compliance with JS Standard Code Style can be tested with
+```
+npm run eslint
 ```
 
 ## Contributing
