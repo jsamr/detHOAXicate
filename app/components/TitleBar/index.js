@@ -1,12 +1,11 @@
 import { div, i, a } from '@cycle/dom'
 
 function view (ans) {
-  const { metaInfo, url } = ans || {}
+  const { metaInfo } = ans || {}
   const { title } = metaInfo || {}
   return div('#TitleBar', { attrs: { class: metaInfo ? 'is-expanded' : 'is-collapsed' } }, [
     div('.title', [
-      title || '?[Title not found]',
-      a('#OpenLinkNewTab', { attrs: { class: 'link', href: url, target: '_blank' } }, [ i('.fa.fa-external-link') ])
+      title || '?[Title not found]'
     ])
   ])
 }

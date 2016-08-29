@@ -1,6 +1,7 @@
 @import '../config';
 @import '../mixins';
 @import './SourcesView';
+@import '../modules/toggle';
 
 %SourcesPanel_header {
   flex-shrink: 0;
@@ -8,10 +9,16 @@
   width: 100%;
   height: $SourcesPanel_header-height;
   color: $SourcesPanel_header-color;
-  z-index: 1;
+  z-index: 2;
   position: relative;
   background: $article-nodes-background;
   overflow: visible;
+  #SourcesPanelToggle {
+    @extend %toggle;
+    position: absolute;
+    right: 30px;
+    top: -35px;
+  }
   .title {
     text-align: center;
     color: #255a70;
@@ -45,6 +52,7 @@
   position: relative;
   overflow: visible;
   background: $frame-bg;
+  z-index: 10;
   > #SourcesView_container {
     overflow: auto;
     position: absolute;
@@ -55,6 +63,7 @@
     padding: 30px;
   }
   #SourcesView {
+    z-index: 3;
     @extend %SourcesView;
   }
   // states

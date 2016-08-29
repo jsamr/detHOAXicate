@@ -1,0 +1,98 @@
+@import '../config';
+@import '../modules/toggle';
+
+%ArticleInfos {
+  transition: $default-transitions;
+  background: $article-nodes-background;
+  font-family: $base-font;
+  flex-basis: 360px;
+  font-size: 20px;
+  align-self: stretch;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+  animation: fadein 2s ease;
+  // states
+  &.is-collapsed {
+    flex-basis: 0;
+    > :not(#InfoToggle) {
+      display: none;
+    }
+  }
+  &.is-expanded {
+    opacity: 1;
+  }
+  #InfoToggle {
+    position: absolute;
+    right: -200px;
+    width: 200px;
+    bottom:  50%;
+    z-index: 5;
+    @extend %toggle;
+    transform: rotate(90deg);
+    transform-origin: 0 100%;
+  }
+  .time {
+    padding: 10px;
+    .timeItem {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .label {
+        font-size: 15px;
+        width: 100px;
+      }
+      .date {
+        font-size: 13px;
+        font-family: monospace;
+      }
+    }
+    span+span {
+      padding-left: 10px;
+    }
+  }
+  .header {
+    margin-top: 10px;
+    font-size: 35px;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  .authors {
+    .author+.author:after {
+      content: ', '
+    }
+  }
+  .link {
+    padding: 10px;
+    i {
+      margin-left: 10px;
+      padding: 5px;
+    }
+  }
+  .title {
+    font-size: 45px;
+    width: 100%;
+    background-size: cover !important;
+    max-height: 35%;
+    height: 35%;
+    display: flex;
+    position: relative;
+    margin: auto;
+  }
+  .description {
+    color:  black;
+    background: rgba(220, 220, 220, 0.85);
+    font-family: $article-content-font;
+    margin-top: 15px;
+    padding-left: 10px;
+    font-size: 17px;
+    font-style: italic;
+    position: absolute;
+    bottom: 0;
+  }
+}

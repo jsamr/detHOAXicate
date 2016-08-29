@@ -1,0 +1,19 @@
+@import '../config';
+
+%toggle {
+  font-size: 17px;
+  background: inherit;
+  cursor: pointer;
+  border-width: 0;
+  i {
+    padding: 9px;
+  }
+  .label {
+    font-family: $base-font;
+    font-size: 14px;
+    padding: 9px;
+  }
+  &:hover {
+    background: #4149a1;
+  }
+}

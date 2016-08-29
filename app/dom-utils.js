@@ -5,7 +5,7 @@ function makeButton ({ selector, desc }) {
 }
 
 function makeInnerButton ({ label, icon }) {
-  return [ i(icon), span('.button-text', label) ]
+  return [ i(icon), label ? span('.button-text', label) : null ]
 }
 
 function makeToggleButton (selector, ifTrue, ifFalse) {

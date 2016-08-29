@@ -3,21 +3,34 @@ import xs from 'xstream'
 import SourcesView from './SourcesView'
 import Header from './Header'
 
-function model (sources) {
-  const { DOM, parseUrlResponse$, parseUrlLoading$, isPanelOpen$ } = sources
+function transform (sources) {
+  const { DOM, parseUrlResponse$, ...otherSources } = sources
   const articleRep$ = parseUrlResponse$.startWith(null)
   const sourcesView = SourcesView({ DOM, articleRep$ })
-  const header = Header()
+  const header = Header(sources)
+  const isPanelOpen$ = header.isPanelOpen$.startWith(false)
+  return {
+    ...otherSources,
+    sourcesViewVdom$: sourcesView.DOM,
+    headerVdom$: header.DOM,
+    isPanelOpen$,
+    articleRep$
+  }
+}
+
+function model (sources) {
+  const { parseUrlLoading$, articleRep$, sourcesViewVdom$, headerVdom$, isPanelOpen$ } = sources
   return xs.combine(
     articleRep$,
     parseUrlLoading$,
     isPanelOpen$,
-    sourcesView.DOM,
-    header.DOM
+    sourcesViewVdom$,
+    headerVdom$
   ).map(([articleRep, isLoading, isPanelOpen, sourcesViewDom, headerDom]) => ({ articleRep, isLoading, isPanelOpen, sourcesViewDom, headerDom }))
 }
 
 function view ({ articleRep, isLoading, isPanelOpen, sourcesViewDom, headerDom }) {
+  console.info(arguments)
   const canShowContent = !isLoading && articleRep
   return div('#SourcesPanel', {
     attrs: {
@@ -32,10 +45,12 @@ function view ({ articleRep, isLoading, isPanelOpen, sourcesViewDom, headerDom }
 }
 
 function SourcesPanel (sources) {
-  const state$ = model(sources)
+  const transformedSources = transform(sources)
+  const state$ = model(transformedSources)
   const vdom$ = state$.map(view)
   return {
-    DOM: vdom$
+    DOM: vdom$,
+    isPanelOpen$: transformedSources.isPanelOpen$
   }
 }
 

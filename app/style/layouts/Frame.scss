@@ -1,5 +1,5 @@
 @import '../config';
-@import './ArticleActions';
+@import './ArticleInfos';
 
 %Article {
   align-self: stretch;
@@ -50,11 +50,11 @@
       opacity: 1;
     }
   }
+  > #ArticleInfo {
+    @extend %ArticleInfos;
+  }
   > #Article {
     animation: fadein 1s;
     @extend %Article;
-  }
-  > #ArticleActions {
-    @extend %ArticleActions;
   }
 }
