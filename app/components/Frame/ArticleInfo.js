@@ -1,9 +1,10 @@
 import { div, i, a, span } from '@cycle/dom'
 import xs from 'xstream'
+import { toggle } from 'shared/stream-utils'
 
 function intent (DOM) {
   return {
-    isExpanded$: DOM.select('#InfoToggle').events('click').fold((acc) => !acc, true)
+    isExpanded$: DOM.select('#InfoToggle').events('click').compose(toggle(true))
   }
 }
 

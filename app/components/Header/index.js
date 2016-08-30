@@ -3,7 +3,9 @@ import xs from 'xstream'
 
 import Parse from 'app/api/Parse'
 import { isValidURL } from 'shared/validation'
+import { toggle } from 'shared/stream-utils'
 import { targetValue } from 'app/dom-utils'
+import NumberPicker from '../../generics/NumberPicker'
 
 // TODO refactor in sub Components
 
@@ -28,21 +30,27 @@ function renderReadModeToggle (readModeOn) {
 }
 
 function transform (sources) {
-  const { parseUrlError$, parseUrlResponse$, selectedUrlSanitized$ } = sources
-  const parseUrlReq$ = Parse({ url$: selectedUrlSanitized$ }).HTTP
+  const { parseUrlError$, parseUrlResponse$, selectedUrlSanitized$, DOM } = sources
+  const depthPicker = NumberPicker({ DOM }, 'DepthPicker', { legend: 'depth', min: 0, max: 6 })
+  const depth$ = depthPicker.number$
+  const depthPickerVdom$ = depthPicker.DOM
+  const parseUrlReq$ = Parse({ url$: selectedUrlSanitized$, depth$ }).HTTP
   const parseUrlLoading$ = xs.merge(
     parseUrlReq$.mapTo(true),
     parseUrlError$.mapTo(false),
     parseUrlResponse$.mapTo(false)
   ).startWith(false)
   return {
+    DOM,
+    depth$,
+    depthPickerVdom$,
     parseUrlLoading$,
     parseUrlReq$,
     ...sources
   }
 }
 
-function view ({ url, isLoading, error, feedback, readModeOn }) {
+function view ({ url, isLoading, error, feedback, readModeOn, depthPickerVdom }) {
   return div('#Header', [
     div('#Title', [ 'detHOAXicate', div('#Subtitle', 'the hoax decompiler') ]),
     div('#UrlSearch', [
@@ -50,6 +58,7 @@ function view ({ url, isLoading, error, feedback, readModeOn }) {
       input('#UrlInput', { attrs: { type: 'text', value: url, autofocus: true, placeholder: 'Type a link to generate a source diagram from' } }),
       renderReadModeToggle(readModeOn)
     ]),
+    depthPickerVdom,
     div('.feedback', [
       isLoading ? renderLoadingIcon() : feedback
     ])
@@ -58,7 +67,7 @@ function view ({ url, isLoading, error, feedback, readModeOn }) {
 
 function intent (DOM) {
   const selectedUrl$ = DOM.select('#UrlInput').events('input').map(targetValue).startWith('')
-  const isReadModeOn$ = DOM.select('#ReadModeToggle').events('click').fold((acc, next) => !acc, true)
+  const isReadModeOn$ = DOM.select('#ReadModeToggle').events('click').compose(toggle(true))
   const selectedUrlSanitized$ = selectedUrl$.filter(isValidURL).startWith(null)
   return {
     isReadModeOn$,
@@ -68,15 +77,16 @@ function intent (DOM) {
 }
 
 function model (sources) {
-  const { selectedUrl$, parseUrlLoading$, parseUrlError$, isReadModeOn$ } = sources
+  const { selectedUrl$, parseUrlLoading$, parseUrlError$, isReadModeOn$, depthPickerVdom$ } = sources
   const feedbackDom$ = xs.merge(selectedUrl$.mapTo(null), parseUrlError$.map(renderErrorIcon))
   const state$ = xs.combine(
     selectedUrl$,
     parseUrlLoading$,
     parseUrlError$.startWith(null),
     feedbackDom$,
-    isReadModeOn$
-  ).map(([url, isLoading, error, feedback, readModeOn]) => ({ url, isLoading, error, feedback, readModeOn }))
+    isReadModeOn$,
+    depthPickerVdom$
+  ).map(([url, isLoading, error, feedback, readModeOn, depthPickerVdom]) => ({ url, isLoading, error, feedback, readModeOn, depthPickerVdom }))
   return state$
 }
 
@@ -91,7 +101,8 @@ function Header (sources) {
     selectedUrl$: transformedSources.selectedUrl$,
     selectedUrlSanitized$: transformedSources.selectedUrlSanitized$,
     parseUrlLoading$: transformedSources.parseUrlLoading$,
-    isReadModeOn$: transformedSources.isReadModeOn$
+    isReadModeOn$: transformedSources.isReadModeOn$,
+    depth$: transformedSources.depth$
   }
 }
 

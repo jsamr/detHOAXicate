@@ -1,18 +1,18 @@
 import { div, span, i } from '@cycle/dom'
 import xs from 'xstream'
+import { toggle } from 'shared/stream-utils'
 
 function intent (DOM) {
   const isPanelOpen$ = xs.merge(
       DOM.select('#SourcesPanelToggle').events('click'),
       DOM.select('#SourcesPanelIcon').events('click')
-  ).fold((acc) => !acc, false)
+  ).compose(toggle(false))
   return {
     isPanelOpen$: isPanelOpen$
   }
 }
 
 function toggleSourcesPanelViewButton (isOpen) {
-  console.info('RECEIVED', isOpen)
   return div('#SourcesPanelToggle',
     isOpen ? [
       i('.fa.fa-chevron-down'),
