@@ -1,22 +1,11 @@
-import { input, div, span, i } from '@cycle/dom'
+import { div, span, i } from '@cycle/dom'
 import xs from 'xstream'
 
 import Parse from 'app/api/Parse'
-import { isValidURL } from 'shared/validation'
-import { toggle } from 'shared/stream-utils'
-import { targetValue } from 'app/dom-utils'
 import NumberPicker from '../../generics/NumberPicker'
-
-// TODO refactor in sub Components
-
-function renderUrlValidation (url) {
-  if (url) return isValidURL(url) ? i('.success .fa .fa-check') : i('.error .fa .fa-warning')
-  else return i('.info.fa.fa-search')
-}
-
-function renderLoadingIcon () {
-  return div('.flex-inline-centered', [ i('.icon-spin6 .icon-spin') ])
-}
+import LoadingIcon from '../../generics/LoadingIcon'
+import Title from './Title'
+import UrlSearch from './UrlSearch'
 
 function renderErrorIcon () {
   return div('.flex-column-centered', [
@@ -25,68 +14,55 @@ function renderErrorIcon () {
   ])
 }
 
-function renderReadModeToggle (readModeOn) {
-  return div('#ReadModeToggle', { attrs: { class: `UrlSearch_feedback ${readModeOn ? '' : 'disabled'}` } }, [ i('.icon-book-open') ])
-}
-
 function transform (sources) {
-  const { parseUrlError$, parseUrlResponse$, selectedUrlSanitized$, DOM } = sources
+  const { parseUrlError$, parseUrlResponse$, DOM } = sources
+  const urlSearch = UrlSearch({ DOM })
+  const { selectedUrlSanitized$, selectedUrl$, isReadModeOn$ } = urlSearch
   const depthPicker = NumberPicker({ DOM }, 'DepthPicker', { legend: 'depth', min: 0, max: 6 })
   const depth$ = depthPicker.number$
-  const depthPickerVdom$ = depthPicker.DOM
   const parseUrlReq$ = Parse({ url$: selectedUrlSanitized$, depth$ }).HTTP
   const parseUrlLoading$ = xs.merge(
     parseUrlReq$.mapTo(true),
     parseUrlError$.mapTo(false),
     parseUrlResponse$.mapTo(false)
   ).startWith(false)
+  // vdoms$
+  const titleVdom$ = Title().DOM
+  const depthPickerVdom$ = depthPicker.DOM
+  const urlSearchVdom$ = urlSearch.DOM
+  const loadingIconVdom$ = LoadingIcon({ isLoading$: parseUrlLoading$ }).DOM
   return {
-    DOM,
     depth$,
-    depthPickerVdom$,
     parseUrlLoading$,
     parseUrlReq$,
+    isReadModeOn$,
+    selectedUrlSanitized$,
+    selectedUrl$,
+    titleVdom$,
+    urlSearchVdom$,
+    depthPickerVdom$,
+    loadingIconVdom$,
     ...sources
   }
 }
 
-function view ({ url, isLoading, error, feedback, readModeOn, depthPickerVdom }) {
+function view ({ titleVdom, urlSearchVdom, depthPickerVdom, loadingIconVdom }) {
   return div('#Header', [
-    div('#Title', [ 'detHOAXicate', div('#Subtitle', 'the hoax decompiler') ]),
-    div('#UrlSearch', [
-      div('#UrlFeedback', { attrs: { class: 'UrlSearch_feedback' } }, [ renderUrlValidation(url) ]),
-      input('#UrlInput', { attrs: { type: 'text', value: url, autofocus: true, placeholder: 'Type a link to generate a source diagram from' } }),
-      renderReadModeToggle(readModeOn)
-    ]),
+    titleVdom,
+    urlSearchVdom,
     depthPickerVdom,
-    div('.feedback', [
-      isLoading ? renderLoadingIcon() : feedback
-    ])
+    loadingIconVdom
   ])
 }
 
-function intent (DOM) {
-  const selectedUrl$ = DOM.select('#UrlInput').events('input').map(targetValue).startWith('')
-  const isReadModeOn$ = DOM.select('#ReadModeToggle').events('click').compose(toggle(true))
-  const selectedUrlSanitized$ = selectedUrl$.filter(isValidURL).startWith(null)
-  return {
-    isReadModeOn$,
-    selectedUrl$,
-    selectedUrlSanitized$
-  }
-}
-
 function model (sources) {
-  const { selectedUrl$, parseUrlLoading$, parseUrlError$, isReadModeOn$, depthPickerVdom$ } = sources
-  const feedbackDom$ = xs.merge(selectedUrl$.mapTo(null), parseUrlError$.map(renderErrorIcon))
+  const { titleVdom$, urlSearchVdom$, depthPickerVdom$, loadingIconVdom$ } = sources
   const state$ = xs.combine(
-    selectedUrl$,
-    parseUrlLoading$,
-    parseUrlError$.startWith(null),
-    feedbackDom$,
-    isReadModeOn$,
-    depthPickerVdom$
-  ).map(([url, isLoading, error, feedback, readModeOn, depthPickerVdom]) => ({ url, isLoading, error, feedback, readModeOn, depthPickerVdom }))
+    titleVdom$,
+    urlSearchVdom$,
+    depthPickerVdom$,
+    loadingIconVdom$
+  ).map(([titleVdom, urlSearchVdom, depthPickerVdom, loadingIconVdom]) => ({ titleVdom, urlSearchVdom, depthPickerVdom, loadingIconVdom }))
   return state$
 }
 
@@ -95,11 +71,10 @@ function model (sources) {
  * @param sources.DOM {object} - the DOM driver
  * @param sources.parseUrlError$ {stream} - the stream of errors from the api/parse request
  * @param sources.parseUrlResponse$ {stream} - a stream of objects holding the response from the api/parse request
- * @returns {{DOM: stream, HTTP: stream, selectedUrl$: stream, selectedUrlSanitized$: stream, parseUrlLoading$: stream, isReadModeOn$: stream, depth$: stream}}
+ * @returns {{DOM: stream, HTTP: stream, selectedUrl$: stream, selectedUrlSanitized$: stream, parseUrlLoading$: stream, isReadModeOn$: stream}}
  */
 function Header (sources) {
-  const intents = intent(sources.DOM)
-  const transformedSources = transform({ ...intents, ...sources })
+  const transformedSources = transform(sources)
   const state$ = model(transformedSources)
   const vdom$ = state$.map(view)
   return {
