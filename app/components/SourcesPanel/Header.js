@@ -36,6 +36,7 @@ function model (sources) {
 }
 
 /**
+ * A Component holding the basic user inputs
  * @param sources
  * @param sources.DOM - the DOM driver
  * @returns {{DOM: stream, isPanelOpen$: stream}}

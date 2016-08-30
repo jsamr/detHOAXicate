@@ -1,5 +1,7 @@
 import { div } from '@cycle/dom'
 import xs from 'xstream'
+import isolate from '@cycle/isolate'
+
 import SourcesView from './SourcesView'
 import Header from './Header'
 
@@ -43,13 +45,6 @@ function view ({ articleRep, isLoading, isPanelOpen, sourcesViewDom, headerDom }
   ])
 }
 
-/**
- * @param sources
- * @param sources.parseUrlResponse$ {stream} - a stream of objects with api/parse response
- * @param sources.parseUrlLoading$ {stream} - a stream of boolean
- * @param sources.canShowDiagram$ {stream} - a stream of boolean
- * @returns {{DOM: stream, isPanelOpen$: stream}}
- */
 function SourcesPanel (sources) {
   const transformedSources = transform(sources)
   const state$ = model(transformedSources)
@@ -60,4 +55,12 @@ function SourcesPanel (sources) {
   }
 }
 
-export default SourcesPanel
+/**
+ * A Component holding different representations of the article sources through diagrams
+ * @param sources
+ * @param sources.parseUrlResponse$ {stream} - a stream of objects with api/parse response
+ * @param sources.parseUrlLoading$ {stream} - a stream of boolean
+ * @param sources.canShowDiagram$ {stream} - a stream of boolean
+ * @returns {{DOM: stream, isPanelOpen$: stream}}
+ */
+export default (sources) => isolate(SourcesPanel)(sources)

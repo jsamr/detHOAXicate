@@ -77,6 +77,7 @@ The project is configured to use [xstream](http://staltz.com/xstream/), very sim
 Here is a set of rules to follow when you are writing [Components](http://cycle.js.org/components.html).  
 This guideline follows the [Model View Intent](http://cycle.js.org/model-view-intent.html) architecture with some little arrangements.  
 
+##### Rules
 - A Component must always follow the [Components](http://cycle.js.org/components.html) conventions.
 - The main component function, i.e. the exported function must use up to 4 functions :
     - [optional] `intent` : `(DOM) => sources` This function represents the intentions of the user through interactions.
@@ -84,12 +85,21 @@ This guideline follows the [Model View Intent](http://cycle.js.org/model-view-in
     - [mandatory for non static components] `model` : `(sources) => stream$` This function turns sources to a unique stream which elements will be the input of the `view` function.
     - [mandatory] `view` : `(data) => vnode` This function eats data (elements of the `state$` stream created with `model`) and outputs virtual dom elements.
 - If the Component is Composed of other components :
+    - It should be isolated, see bellow
     - It should be defined in a file named `index.js` inside a folder holding its name
     - Its vdom$ children should only be composed with the depending Components
-    - Depending Components that are specific to this component should be defined in the same folder
-- If the Component is not composed of other Components :
+    - Depending Components that are specific to this component
+        - should be defined in the same folder
+        - don't need to be isolated
+    - Depending Components that are not specific to this component should be defined in the `generics` folder
+- If the Component is not composed of other exclusive Components :
     - It should be defined in a file titled after its name, like `AComponent.js`
-   
+- Any reusable Component
+    - should be defined in the `generics` folder
+    - should be isolated
+
+
+##### Typical definition
 A typicall Component function will look like following: 
 
 ```javascript
@@ -104,6 +114,32 @@ function MyComponent (sources) {
   }
 }
 ```
+
+##### Isolating a component
+
+```javascript
+@import isolate from '@cycle/isolate'
+
+// ...
+
+function MyComponent (sources) {
+  // Component definition
+  return {
+    DOM: vdom$,
+    myComponentSink$
+  }
+}
+
+/**
+* Component description, it is mandatory to provide sources and sinks fields
+* @param sources
+* @param sources.DOM - the DOM driver
+* @return {{ DOM: stream, myComponentSink$: stream}}
+*/
+export default (sources) => isolate(Component)(sources)
+```
+Eventually, you can add a `scope` param to be forwarded as the second `isolate` param.  
+[See the complete guide about isolation in the official doc](http://cycle.js.org/components.html#multiple-instances-of-the-same-component).
 
 
 ### Git

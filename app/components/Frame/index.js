@@ -1,5 +1,6 @@
 import { div } from '@cycle/dom'
 import xs from 'xstream'
+import isolate from '@cycle/isolate'
 
 import { pausable, complement } from 'shared/stream-utils'
 import ArticleReadMode from './ArticleReadMode'
@@ -44,16 +45,6 @@ function model (sources) {
   ).map(([infoVdom, innerVdom, isPanelOpen]) => ({ infoVdom, innerVdom, isPanelOpen }))
 }
 
-/**
- * @param sources
- * @param {stream} sources.selectedUrl$ - a stream of urls
- * @param {stream} sources.articleInnerHtml$ - a stream of pure text html
- * @param {stream} sources.isReadModeOn$ - a stream of boolean
- * @param {stream} sources.isPanelOpen$ - a stream of boolean
- * @param {stream} sources.parseUrlResponse$ - a stream of responses from the api/parse request
- * @param {stream} sources.DOM - the DOM driver
- * @returns {{DOM: stream}}
- */
 function Frame (sources) {
   const transformedSources = transform(sources)
   const state$ = model(transformedSources)
@@ -63,4 +54,15 @@ function Frame (sources) {
   }
 }
 
-export default Frame
+/**
+ * A Component displaying the content of the article or the original website + its meta-info
+ * @param sources
+ * @param {stream} sources.selectedUrl$ - a stream of urls
+ * @param {stream} sources.articleInnerHtml$ - a stream of pure text html
+ * @param {stream} sources.isReadModeOn$ - a stream of boolean
+ * @param {stream} sources.isPanelOpen$ - a stream of boolean
+ * @param {stream} sources.parseUrlResponse$ - a stream of responses from the api/parse request
+ * @param {stream} sources.DOM - the DOM driver
+ * @returns {{DOM: stream}}
+ */
+export default (sources) => isolate(Frame)(sources)
