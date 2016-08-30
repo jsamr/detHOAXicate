@@ -34,7 +34,7 @@ cd detHOAXicate
 npm run init
 ```
 
-**Note:** As the script `npm run init` aims to install eslint globally, you might run into trouble if your don't have right access.
+**Note:** As the script `npm run init` aims to install babel-cli globally, you might run into trouble if your don't have right access.
 Try `sudo npm run init` instead if errors pop up.
 
 <a name='running'></a>
@@ -111,8 +111,7 @@ Before any commit, you MUST :
 
 - Run a `npm test` command that succeed. The test command also run eslint to validate code style (compliance with JS Standard Code Style, see above badge.)
 - Describe the commit message in accordance with our `.gitmessage` template.
-To do so, make sure you have configured git commit templates for this project with the following command :
-`git config commit.template ./.gitmessage`. We aim at high quality commit messages, so please do your best!
+- **Never use `-m` option with `git commit`**, otherwise the template will be missed.
 
 ## API
 

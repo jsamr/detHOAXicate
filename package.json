@@ -19,7 +19,8 @@
   },
   "homepage": "https://github.com/sveinburne/detHOAXicate",
   "scripts": {
-    "init": "npm run git-init && npm i && npm i estraverse-fb",
+    "init": "npm run git-init && npm i && npm i estraverse-fb && npm run install-globals",
+    "install-globals": "npm i -g babel-cli@^6.4.0",
     "git-init": "git config commit.template ./.gitmessage && git submodule init && git submodule update && cd node_local_modules/readability && git checkout 71aa562387fa507b0bac30ae7144e1df7ba8a356 && cd ../..",
     "test": "npm run eslint",
     "start": "babel-node server/index.js",
@@ -32,7 +33,6 @@
     "@cycle/http": "^10.2.1",
     "@cycle/isolate": "^1.4.0",
     "@cycle/xstream-run": "^3.1.0",
-    "babel-cli": "^6.4.0",
     "babel-polyfill": "^6.13.0",
     "bluebird": "^3.4.1",
     "body-parser": "^1.15.2",
@@ -49,6 +49,7 @@
   },
   "devDependencies": {
     "autoprefixer": "^6.0.3",
+    "babel-cli": "^6.4.0",
     "babel-core": "^6.13.2",
     "babel-eslint": "^4.1.6",
     "babel-jscs": "^2.0.5",
