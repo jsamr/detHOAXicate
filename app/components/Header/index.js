@@ -96,7 +96,6 @@ function model (sources) {
  * @param sources.parseUrlError$ {stream} - the stream of errors from the api/parse request
  * @param sources.parseUrlResponse$ {stream} - a stream of objects holding the response from the api/parse request
  * @returns {{DOM: stream, HTTP: stream, selectedUrl$: stream, selectedUrlSanitized$: stream, parseUrlLoading$: stream, isReadModeOn$: stream, depth$: stream}}
- * @constructor
  */
 function Header (sources) {
   const intents = intent(sources.DOM)

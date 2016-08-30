@@ -11,7 +11,6 @@ function model (sources) {
  * @param sources.url$ {stream} A stream of url-formatted string
  * @param sources.depth$ {stream} A stream of integers
  * @returns {{HTTP: {stream}}}
- * @constructor
  */
 function Parse (sources) {
   const state$ = model(sources)

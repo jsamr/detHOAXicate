@@ -23,7 +23,6 @@ function model (sources) {
  * @param sources.parseUrlResponse$ - a stream of objects with api/parse response
  * @param sources.canShowDiagram$ - a stream of boolean
  * @returns {{DOM: stream}}
- * @constructor
  */
 function TitleBar (sources) {
   const state$ = model(sources)

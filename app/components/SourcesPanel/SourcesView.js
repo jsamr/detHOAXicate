@@ -13,7 +13,6 @@ function view (articleRep) {
  * @param sources
  * @param sources.articleRep$ - a stream of objects with api/parse response
  * @returns {{DOM: stream}}
- * @constructor
  */
 function SourcesView (sources) {
   const state$ = model(sources)

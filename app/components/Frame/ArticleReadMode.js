@@ -40,7 +40,6 @@ function view (htmlString) {
  * @param sources
  * @param sources.innerHtml$ - a stream of string holding the pure html to be mounted
  * @returns {{DOM: stream}}
- * @constructor
  */
 function ArticleReadMode (sources) {
   const $state = model(sources)

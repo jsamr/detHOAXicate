@@ -39,7 +39,6 @@ function model (sources) {
  * @param sources
  * @param sources.DOM - the DOM driver
  * @returns {{DOM: stream, isPanelOpen$: stream}}
- * @constructor
  */
 function Header (sources) {
   const intents = intent(sources.DOM)

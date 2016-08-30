@@ -86,6 +86,5 @@ function NumberPicker (sources, options) {
  * @param [options.max=+Infinity] {number} - An integer that sets the max value
  * @param [options.label=''] {string} - An integer that sets the name of the picker
  * @returns {{DOM: stream, number$: stream}}
- * @constructor
  */
 export default (sources, scope, options) => isolate(NumberPicker, scope)(sources, options)
