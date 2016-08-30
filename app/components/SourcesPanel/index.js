@@ -43,6 +43,13 @@ function view ({ articleRep, isLoading, isPanelOpen, sourcesViewDom, headerDom }
   ])
 }
 
+/**
+ * @param sources
+ * @param sources.parseUrlResponse$ {stream} - a stream of objects with api/parse response
+ * @param sources.parseUrlLoading$ {stream} - a stream of boolean
+ * @param sources.canShowDiagram$ {stream} - a stream of boolean
+ * @returns {{DOM: stream, isPanelOpen$: stream}}
+ */
 function SourcesPanel (sources) {
   const transformedSources = transform(sources)
   const state$ = model(transformedSources)

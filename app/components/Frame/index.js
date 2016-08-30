@@ -50,6 +50,7 @@ function model (sources) {
  * @param {stream} sources.articleInnerHtml$ - a stream of pure text html
  * @param {stream} sources.isReadModeOn$ - a stream of boolean
  * @param {stream} sources.isPanelOpen$ - a stream of boolean
+ * @param {stream} sources.parseUrlResponse$ - a stream of responses from the api/parse request
  * @param {stream} sources.DOM - the DOM driver
  * @returns {{DOM: stream}}
  */

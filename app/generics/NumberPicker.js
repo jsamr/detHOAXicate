@@ -14,11 +14,13 @@ const defaultOptions = {
 function view ({ value, legend, min, max }) {
   return div('.NumberPicker', [
     i('#Decrementer', { attrs: { class: `fa fa-minus modifier ${value <= min ? 'is-disabled' : ''}` } }),
-    input('#NumberInput', { attrs: { type: 'text', value }, hook: {
-      update: (vdom) => {
-        vdom.elm.value = value
-      }
-    }}),
+    input('#NumberInput', {
+      attrs: { type: 'text', value },
+      hook: {
+        update: (vdom) => {
+          vdom.elm.value = value
+        }
+      }}),
     i('#Incrementer', { attrs: { class: `fa fa-plus modifier ${value >= max ? 'is-disabled' : ''}` } }),
     span('.legend', legend)
   ])

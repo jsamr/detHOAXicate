@@ -8,6 +8,9 @@ function view () {
   ]))
 }
 
+/**
+ * @returns {{DOM: stream}}
+ */
 function Fallback () {
   const vdom$ = view()
   return {

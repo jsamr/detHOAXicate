@@ -9,6 +9,12 @@ function view (articleRep) {
   return pre('#SourcesView', JSON.stringify(articleRep, null, 2))
 }
 
+/**
+ * @param sources
+ * @param sources.articleRep$ - a stream of objects with api/parse response
+ * @returns {{DOM: stream}}
+ * @constructor
+ */
 function SourcesView (sources) {
   const state$ = model(sources)
   const vdom$ = state$.map(view)

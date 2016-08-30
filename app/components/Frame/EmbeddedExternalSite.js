@@ -16,6 +16,11 @@ function view (selectedUrl) {
   )
 }
 
+/**
+ * @param sources
+ * @param sources.selectedUrl$ - a stream of string
+ * @returns {{DOM: stream}}
+ */
 function EmbeddedExternalSite (sources) {
   const state$ = model(sources)
   const vdom$ = state$.map(view)

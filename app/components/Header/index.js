@@ -90,6 +90,14 @@ function model (sources) {
   return state$
 }
 
+/**
+ * @param sources
+ * @param sources.DOM {object} - the DOM driver
+ * @param sources.parseUrlError$ {stream} - the stream of errors from the api/parse request
+ * @param sources.parseUrlResponse$ {stream} - a stream of objects holding the response from the api/parse request
+ * @returns {{DOM: stream, HTTP: stream, selectedUrl$: stream, selectedUrlSanitized$: stream, parseUrlLoading$: stream, isReadModeOn$: stream, depth$: stream}}
+ * @constructor
+ */
 function Header (sources) {
   const intents = intent(sources.DOM)
   const transformedSources = transform({ ...intents, ...sources })
@@ -101,8 +109,7 @@ function Header (sources) {
     selectedUrl$: transformedSources.selectedUrl$,
     selectedUrlSanitized$: transformedSources.selectedUrlSanitized$,
     parseUrlLoading$: transformedSources.parseUrlLoading$,
-    isReadModeOn$: transformedSources.isReadModeOn$,
-    depth$: transformedSources.depth$
+    isReadModeOn$: transformedSources.isReadModeOn$
   }
 }
 

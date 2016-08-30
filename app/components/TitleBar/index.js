@@ -1,5 +1,7 @@
 import { div } from '@cycle/dom'
 
+// TODO: use canShowDiagram$ to expand / collapse
+
 function view (ans) {
   const { metaInfo } = ans || {}
   const { title } = metaInfo || {}
@@ -16,6 +18,13 @@ function model (sources) {
   return metaInfoStream$
 }
 
+/**
+ * @param sources
+ * @param sources.parseUrlResponse$ - a stream of objects with api/parse response
+ * @param sources.canShowDiagram$ - a stream of boolean
+ * @returns {{DOM: stream}}
+ * @constructor
+ */
 function TitleBar (sources) {
   const state$ = model(sources)
   const vdom$ = state$.map(view)

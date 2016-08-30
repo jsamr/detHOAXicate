@@ -65,6 +65,12 @@ function view ({ resp, isExpanded }) {
   ])
 }
 
+/**
+ *
+ * @param sources
+ * @param sources.parseUrlResponse$ - a stream of objects holding the response from the api/parse request
+ * @returns {{DOM: stream}}
+ */
 function ArticleInfo (sources) {
   const intents = intent(sources.DOM)
   const $state = model({ ...sources, ...intents })
