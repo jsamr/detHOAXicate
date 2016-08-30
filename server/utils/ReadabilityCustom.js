@@ -1,4 +1,4 @@
-import { Readability } from 'readability'
+import { Readability } from 'readability/index.js'
 
 class ReadabilityCustom extends Readability {
 
