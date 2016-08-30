@@ -2,6 +2,7 @@
 
 .NumberPicker {
   position: relative;
+  flex-shrink: 0;
   > #NumberInput {
     box-shadow: $card-box-shadow;
     width: 25px;
