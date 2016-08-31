@@ -59,10 +59,14 @@
     width: 40px;
     font-size: 25px;
     opacity: 1;
-    text-align: center;
+    text-align: left;
     &.disabled {
       opacity: 0.2;
     }
+  }
+  #UrlFeedback {
+    font-size: 16px;
+    padding-left: 0;
   }
 }
 

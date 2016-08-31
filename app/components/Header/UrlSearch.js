@@ -5,6 +5,7 @@ import isolate from '@cycle/isolate'
 import { isValidURL } from 'shared/validation'
 import { toggle } from 'shared/stream-utils'
 import { targetValue } from 'app/dom-utils'
+
 const httpRegex = /^http[s]?:\/\//
 const httpRegexExact = /^http[s]?:\/\/$/
 
@@ -17,12 +18,12 @@ function renderUrlError () {
 
 function renderUrlValidation (url) {
   return div(
-    url && !httpRegexExact.test(url) ? ((isValidURL(url)) ? [ i('.is-success .fa .fa-check') ] : renderUrlError()) : [ i('.is-info.fa.fa-search') ]
+    url && !httpRegexExact.test(url) ? ((isValidURL(url)) ? [ i('.is-success .fa .fa-check', { attrs: { title: 'This link is well-formatted' } }) ] : renderUrlError()) : [ null ]
   )
 }
 
 function renderReadModeToggle (readModeOn) {
-  return div('#ReadModeToggle', { attrs: { class: `UrlSearch_feedback ${readModeOn ? '' : 'disabled'}` } }, [ i('.icon-book-open') ])
+  return div('#ReadModeToggle', { attrs: { class: `UrlSearch_feedback ${readModeOn ? '' : 'disabled'}`, title: readModeOn ? 'Read mode is on. Click to disable' : 'Read mode is off. click to enable' } }, [ i('.icon-book-open') ])
 }
 
 function sanitizeUrl (url) {
@@ -51,6 +52,7 @@ function view ({ url, isReadModeOn }) {
   // display an url which protocol (http:// or https://) has been stripped off
   const protocolLessUrl = url.replace(httpRegex, '')
   return div('#UrlSearch', [
+    div('.UrlSearch_feedback', { attrs: { class: 'UrlSearch_feedback' } }, [ i('.is-info.fa.fa-search') ]),
     div('#UrlFeedback', { attrs: { class: 'UrlSearch_feedback' } }, [ renderUrlValidation(url) ]),
     input('#UrlInput', {
       hook: { update: (vdom) => {
