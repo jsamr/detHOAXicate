@@ -3,7 +3,7 @@ import webpack from 'webpack'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 
 const appConfig = {
-  devtool: 'eval-source-map',
+  devtool: 'cheap-source-map',
   entry: [
     'webpack-hot-middleware/client?reload=true',
     path.join(__dirname, 'app/main.js')
