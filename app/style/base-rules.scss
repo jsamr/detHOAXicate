@@ -30,16 +30,16 @@ body {
 }
 
 i {
-  &.error {
+  &.is-error {
     color: $error-color;
   }
-  &.success {
+  &.is-success {
     color: $success-color;
   }
-  &.info {
+  &.is-info {
     color: $info-color;
   }
-  &.warn {
+  &.is-warn {
     color: $warn-color;
   }
 }

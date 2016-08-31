@@ -9,7 +9,6 @@ const ERROR_TYPES_HANDLERS = {
 }
 
 function standardizedError (type, options) {
-  console.info('TYPE', type, 'OPTIONS', options)
   const error = new Error(`type: ${type}, message: ${ERROR_TYPES_HANDLERS[type](options)}`)
   error.type = type
   error.options = options
@@ -65,7 +64,7 @@ let success = r$ => r$.replaceError(xs.empty)
 function splitHttpScope (scope, HTTP, customFailure = identity) {
   const select$ = HTTP.select(scope).map(handleHttpErrors).map(sanitizeJSONBody).map(handleApplicationErrors(customFailure))
   const baseStreamSuccess$ = select$.map(success).flatten()
-  const baseStreamFailure$ = select$.map(failure).flatten().debug('ERROR')
+  const baseStreamFailure$ = select$.map(failure).flatten()
   return {
     parseUrlResponse$: baseStreamSuccess$.remember(),
     parseUrlError$: baseStreamFailure$.remember()

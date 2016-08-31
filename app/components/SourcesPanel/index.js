@@ -8,7 +8,7 @@ import Credits from './Credits'
 
 function transform (sources) {
   const { DOM, parseUrlResponse$, ...otherSources } = sources
-  const articleRep$ = parseUrlResponse$.debug('PARSE URL RESP SP').startWith(null)
+  const articleRep$ = parseUrlResponse$.startWith(null)
   const sourcesView = SourcesView({ DOM, articleRep$ })
   const header = Header(sources)
   const credits = Credits()

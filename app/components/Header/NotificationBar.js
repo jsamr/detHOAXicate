@@ -2,7 +2,7 @@ import { div, i, em } from '@cycle/dom'
 
 function view (error) {
   return div('#NotificationBar', { class: { 'is-extended': !!error, 'is-collapsed': !error } }, [
-    div('.NotificationBar_icon', [i('.fa.fa-warning.error'), 'detHOAXicate could not parse this link. Please try an other link']),
+    div('.NotificationBar_icon', [i('.fa.fa-warning.is-error'), 'detHOAXicate could not parse this link. Please try an other link']),
     div('.NotificationBar_message', [ em([error && error.message]) ])
   ])
 }

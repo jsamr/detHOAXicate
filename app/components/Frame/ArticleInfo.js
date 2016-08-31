@@ -34,7 +34,6 @@ function model (sources) {
 }
 
 function view ({ resp, isExpanded }) {
-  console.info('ARTICLE INFO RESP', resp)
   const { metaInfo, url } = resp || {}
   const {
     authors,

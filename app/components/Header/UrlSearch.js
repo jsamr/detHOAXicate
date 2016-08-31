@@ -10,14 +10,14 @@ const httpRegexExact = /^http[s]?:\/\/$/
 
 function renderUrlError () {
   return [
-    i('.warn .fa .fa-warning'),
+    i('.is-warn .fa .fa-warning'),
     div('.feedbacktip', [ div('.arrow-up'), 'The link is not of the expected format. Must be an URL.' ])
   ]
 }
 
 function renderUrlValidation (url) {
   return div(
-    url && !httpRegexExact.test(url) ? ((isValidURL(url)) ? [ i('.success .fa .fa-check') ] : renderUrlError()) : [ i('.info.fa.fa-search') ]
+    url && !httpRegexExact.test(url) ? ((isValidURL(url)) ? [ i('.is-success .fa .fa-check') ] : renderUrlError()) : [ i('.is-info.fa.fa-search') ]
   )
 }
 
