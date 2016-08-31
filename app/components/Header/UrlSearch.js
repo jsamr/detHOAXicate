@@ -8,7 +8,7 @@ import { targetValue } from 'app/dom-utils'
 
 function renderUrlError () {
   return [
-    i('.error .fa .fa-warning'),
+    i('.warn .fa .fa-warning'),
     div('.feedbacktip', [ div('.arrow-up'), 'The link is not of the expected format. Must be an URL.' ])
   ]
 }

@@ -39,4 +39,7 @@ i {
   &.info {
     color: $info-color;
   }
+  &.warn {
+    color: $warn-color;
+  }
 }

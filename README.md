@@ -185,6 +185,7 @@ _The body is a single **ArticleRepresentation** object, see below_
 | --- | ----- | ------------ |
 | url | **string, [URL](https://url.spec.whatwg.org//)** | the url referring to the article |
 | parseSuccess | **boolean** | wether or not the url could be parsed |
+| errorCode | **string  &#124; null**, [application error code](/shared/application-error-codes.js) | The code of the encountered error. Available exactly when `parseSuccess === false`|
 | sourcesCandidates | **[[ArticleRepresentation](#article-meta-info-o)] &#124; `null`** | an array of the referred, externals articles candidates. Note that depending on the `depth` request parameter, this field might or might not be `null`.  |
 | metaInfo | **[ArticleMetaInfo](#article-description-o)** | a set of meta info about the article, see below |
 | sanitizedArticleHtml |**string**, DOM formatted  | The sanitized, readability version of the article. **Only available for the root ArticleRepresentation element** |
@@ -230,6 +231,7 @@ _The body is a single **ArticleRepresentation** object, see below_
 *Not yet specified, falls back to an empty object `{}`*
 
 #### Errors
+
 All http errors have a 4XX, 5XX status code and a `Content-Type: text/plain` formatted body.
 
 | status | description |

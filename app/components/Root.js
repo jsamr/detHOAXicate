@@ -17,9 +17,13 @@ function extractRootArticleInnherHtml (articleRepFlow$) {
   return articleRepFlow$.filter(hasSucceedParsing).map(getInnerHtml)
 }
 
+function findParseErrors (res) {
+  return res.parseSuccess ? null : { errorCode: res.errorCode }
+}
+
 function transform (sources) {
   const { DOM, HTTP } = sources
-  const { parseUrlResponse$, parseUrlError$ } = splitHttpScope('parse', HTTP)
+  const { parseUrlResponse$, parseUrlError$ } = splitHttpScope('parse', HTTP, findParseErrors)
   const articleInnerHtml$ = parseUrlResponse$.compose(extractRootArticleInnherHtml)
   const header = Header({ DOM, parseUrlError$, parseUrlResponse$ })
   const { selectedUrl$, isReadModeOn$ } = header

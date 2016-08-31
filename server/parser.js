@@ -16,11 +16,15 @@ function isNodeHrefUrl (node) {
   return typeof node.href === 'string' && isUrl(node.href)
 }
 
-function getFallbackArticleRepresentation (url, errorMessage = undefined) {
+function retrieveErrorCode (error) {
+  return error.code || error.errno || 'UNKNOWN'
+}
+
+function getFallbackArticleRepresentation (url, errorCode = undefined) {
   return {
     url,
     parseSuccess: false,
-    parseError: errorMessage,
+    errorCode: errorCode,
     sourcesCandidates: null,
     metaInfo: {},
     standardsCompliance: {},
@@ -44,6 +48,7 @@ function getArticleRepresentation (window, targetUrl, depth, currentDepth) {
       const responseBase = {
         url: targetUrl,
         parseSuccess: true,
+        errorCode: null,
         metaInfo,
         sanitizedArticleHtml: currentDepth === 0 ? articleMiner.retrieveArticlePage(articleNode) : undefined,
         standardsCompliance: {},
@@ -68,7 +73,7 @@ function getArticleRepresentation (window, targetUrl, depth, currentDepth) {
       resolve(
         merge(getFallbackArticleRepresentation(
           targetUrl,
-          'Could not find a dom element candidate to contain article content'
+          'ARTNOTFOUND'
         ), { metaInfo })
       )
     }
@@ -83,12 +88,15 @@ function parseUrl (targetUrl, depth = 1, currentDepth = 0) {
       url: targetUrl,
       done: function (jsdomErr, window) {
         console.info('took', new Date() - now, 'ms to mount dom tree for url', targetUrl)
-        if (jsdomErr) resolve(getFallbackArticleRepresentation(targetUrl, jsdomErr.message))
-        else {
+        if (jsdomErr) {
+          console.error(jsdomErr.message)
+          resolve(getFallbackArticleRepresentation(targetUrl, retrieveErrorCode(jsdomErr)))
+        } else {
           try {
             resolve(getArticleRepresentation(window, targetUrl, depth, currentDepth))
           } catch (resolveErr) {
-            resolve(getFallbackArticleRepresentation(targetUrl, resolveErr.message))
+            console.error(resolveErr.message)
+            resolve(getFallbackArticleRepresentation(targetUrl, retrieveErrorCode(resolveErr)))
           }
         }
       }
