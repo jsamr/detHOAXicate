@@ -1,4 +1,4 @@
-import { div, span, i } from '@cycle/dom'
+import { div } from '@cycle/dom'
 import xs from 'xstream'
 
 import Parse from 'app/api/Parse'
@@ -6,13 +6,7 @@ import NumberPicker from '../../generics/NumberPicker'
 import LoadingIcon from '../../generics/LoadingIcon'
 import Title from './Title'
 import UrlSearch from './UrlSearch'
-
-function renderErrorIcon () {
-  return div('.flex-column-centered', [
-    i('.fa.fa-warning.error'),
-    span('.font-small', 'detHOAXicate could not parse this link. Please try an other link')
-  ])
-}
+import NotificationBar from './NotificationBar'
 
 function transform (sources) {
   const { parseUrlError$, parseUrlResponse$, DOM } = sources
@@ -21,6 +15,8 @@ function transform (sources) {
   const depthPicker = NumberPicker({ DOM }, 'DepthPicker', { legend: 'depth', min: 0, max: 6 })
   const depth$ = depthPicker.number$
   const parseUrlReq$ = Parse({ url$: selectedUrlSanitized$, depth$ }).HTTP
+  const errorFlow$ = xs.merge(parseUrlError$, parseUrlResponse$.mapTo(null), parseUrlReq$.mapTo(null), selectedUrl$.mapTo(null))
+  const notificationBarVdom$ = NotificationBar({ DOM, errorFlow$ }).DOM
   const parseUrlLoading$ = xs.merge(
     parseUrlReq$.mapTo(true),
     parseUrlError$.mapTo(false),
@@ -42,27 +38,30 @@ function transform (sources) {
     urlSearchVdom$,
     depthPickerVdom$,
     loadingIconVdom$,
+    notificationBarVdom$,
     ...sources
   }
 }
 
-function view ({ titleVdom, urlSearchVdom, depthPickerVdom, loadingIconVdom }) {
+function view ({ titleVdom, urlSearchVdom, depthPickerVdom, loadingIconVdom, notificationBarVdom }) {
   return div('#Header', [
     titleVdom,
     urlSearchVdom,
     depthPickerVdom,
-    loadingIconVdom
+    loadingIconVdom,
+    notificationBarVdom
   ])
 }
 
 function model (sources) {
-  const { titleVdom$, urlSearchVdom$, depthPickerVdom$, loadingIconVdom$ } = sources
+  const { titleVdom$, urlSearchVdom$, depthPickerVdom$, loadingIconVdom$, notificationBarVdom$ } = sources
   const state$ = xs.combine(
     titleVdom$,
     urlSearchVdom$,
     depthPickerVdom$,
-    loadingIconVdom$
-  ).map(([titleVdom, urlSearchVdom, depthPickerVdom, loadingIconVdom]) => ({ titleVdom, urlSearchVdom, depthPickerVdom, loadingIconVdom }))
+    loadingIconVdom$,
+    notificationBarVdom$
+  ).map(([titleVdom, urlSearchVdom, depthPickerVdom, loadingIconVdom, notificationBarVdom]) => ({ titleVdom, urlSearchVdom, depthPickerVdom, loadingIconVdom, notificationBarVdom }))
   return state$
 }
 
@@ -71,7 +70,7 @@ function model (sources) {
  * @param sources.DOM {object} - the DOM driver
  * @param sources.parseUrlError$ {stream} - the stream of errors from the api/parse request
  * @param sources.parseUrlResponse$ {stream} - a stream of objects holding the response from the api/parse request
- * @returns {{DOM: stream, HTTP: stream, selectedUrl$: stream, selectedUrlSanitized$: stream, parseUrlLoading$: stream, isReadModeOn$: stream}}
+ * @returns {{DOM: stream, HTTP: stream, selectedUrl$: stream, parseUrlLoading$: stream, isReadModeOn$: stream}}
  */
 function Header (sources) {
   const transformedSources = transform(sources)
@@ -81,7 +80,6 @@ function Header (sources) {
     DOM: vdom$,
     HTTP: transformedSources.parseUrlReq$,
     selectedUrl$: transformedSources.selectedUrl$,
-    selectedUrlSanitized$: transformedSources.selectedUrlSanitized$,
     parseUrlLoading$: transformedSources.parseUrlLoading$,
     isReadModeOn$: transformedSources.isReadModeOn$
   }

@@ -13,15 +13,18 @@ function view ({ infoVdom, innerVdom, isPanelOpen }) {
   return div('#Frame', { attrs }, [ infoVdom, innerVdom ])
 }
 
+const falsy = (val) => !val
+
 function transform (sources) {
-  const { DOM, articleInnerHtml$, isReadModeOn$, parseUrlResponse$, ...otherSources } = sources
+  const { DOM, articleInnerHtml$, isReadModeOn$, parseUrlResponse$, canShowDiagram$, ...otherSources } = sources
   const isReadModeOff$ = isReadModeOn$.compose(complement)
   const innerHtml$ = articleInnerHtml$
   const articleInfos = ArticleInfos({ DOM, parseUrlResponse$ })
-  const articleInfosVdom$ = articleInfos.DOM
+  const articleInfosVdom$ = canShowDiagram$.map((canShow) => canShow ? articleInfos.DOM : xs.of(null)).flatten()
   return {
     isReadModeOff$,
     isReadModeOn$,
+    canShowDiagram$,
     innerHtml$,
     articleInfosVdom$,
     ...otherSources
@@ -29,14 +32,15 @@ function transform (sources) {
 }
 
 function model (sources) {
-  const { selectedUrl$, innerHtml$, isReadModeOn$, isReadModeOff$, isPanelOpen$, articleInfosVdom$ } = sources
-  const fallback = Fallback().DOM
-  const articleReadMode = ArticleReadMode({ innerHtml$ }).DOM.compose(pausable(isReadModeOn$))
-  const embeddedExternalSite = EmbeddedExternalSite({ selectedUrl$ }).DOM.compose(pausable(isReadModeOff$))
+  const { selectedUrl$, innerHtml$, isReadModeOn$, isReadModeOff$, isPanelOpen$, articleInfosVdom$, canShowDiagram$ } = sources
+  const fallback = Fallback()
+  const fallbackVdom$ = canShowDiagram$.filter(falsy).map(() => fallback.DOM).flatten()
+  const articleReadModeVdom$ = ArticleReadMode({ innerHtml$ }).DOM.compose(pausable(isReadModeOn$))
+  const embeddedExternalSiteVdom$ = EmbeddedExternalSite({ selectedUrl$ }).DOM.compose(pausable(isReadModeOff$))
   const innerVdom$ = xs.merge(
-    fallback,
-    articleReadMode,
-    embeddedExternalSite
+    fallbackVdom$,
+    articleReadModeVdom$,
+    embeddedExternalSiteVdom$
   )
   return xs.combine(
     articleInfosVdom$,
@@ -61,6 +65,7 @@ function Frame (sources) {
  * @param {stream} sources.articleInnerHtml$ - a stream of pure text html
  * @param {stream} sources.isReadModeOn$ - a stream of boolean
  * @param {stream} sources.isPanelOpen$ - a stream of boolean
+ * @param {stream} sources.canShowDiagram$ - a stream of boolean
  * @param {stream} sources.parseUrlResponse$ - a stream of responses from the api/parse request
  * @param {stream} sources.DOM - the DOM driver
  * @returns {{DOM: stream}}

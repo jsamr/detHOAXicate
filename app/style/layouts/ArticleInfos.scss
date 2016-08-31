@@ -16,7 +16,7 @@
   align-items: center;
   position: relative;
   z-index: 1;
-  animation: fadein 2s ease;
+  animation: $fadein-transition;
   // states
   &.is-collapsed {
     flex-basis: 0;

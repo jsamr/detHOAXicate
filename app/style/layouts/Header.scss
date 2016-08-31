@@ -1,5 +1,109 @@
 @import '../config';
 
+%Title {
+  flex-shrink: 0;
+  padding-left: 10px;
+  text-align: center;
+  font-size: 35px;
+  margin-right: 10px;
+  > #Subtitle {
+    font-size: 13px;
+    word-spacing: 7px;
+    letter-spacing: 4px;
+  }
+}
+
+%UrlSearch {
+  box-shadow: $card-box-shadow;
+  flex-grow: 1;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  margin: 10px;
+  width: 80vw;
+  max-width: 1200px;
+  padding: 5px;
+  border-radius: 30px;
+  background: white;
+  .feedbacktip {
+    box-shadow: $card-box-shadow;
+    font-size: 16px;
+    padding: 10px;
+    position: absolute;
+    top: 80px;
+    z-index: 100;
+    background: white;
+    animation: shake 0.4s;
+    .arrow-up {
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-bottom: 35px solid white;
+      top: -35px;
+      width: 0;
+      height: 0;
+      left: 10px;
+      position: absolute;
+    }
+  }
+  #UrlInput {
+    flex-grow: 1;
+    font-size: 14.5px;
+    background: inherit;
+    text-align: center;
+    color: black;
+  }
+  #ReadModeToggle {
+    cursor: pointer;
+  }
+  .UrlSearch_feedback {
+    width: 40px;
+    font-size: 25px;
+    opacity: 1;
+    text-align: center;
+    &.disabled {
+      opacity: 0.2;
+    }
+  }
+}
+
+%NotificationBar {
+  position: absolute;
+  top: $Header-height;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background: $app-background;
+  z-index: 100;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: center;
+  transition: $default-transitions-fast;
+  border: 1px solid #c8c8c8;
+  overflow: hidden;
+  box-sizing: border-box;
+  .NotificationBar_icon {
+    display: flex;
+    align-items: center;
+    i {
+      font-size: 35px;
+      margin-left: 40px;
+      margin-right: 40px;
+    }
+  }
+  .NotificationBar_message {
+    flex-grow: 1;
+    text-align: center;
+  }
+  // states
+  &.is-collapsed {
+    height: 0;
+  }
+  &.is-extended {
+
+  }
+}
+
 %Header {
   height: $Header-height;
   background: $app-background url($arrow-pattern);
@@ -7,55 +111,14 @@
   align-items: center;
   justify-content: space-between;
   flex-shrink: 0;
+  overflow: visible;
   > #Title {
-    flex-shrink: 0;
-    padding-left: 10px;
-    text-align: center;
-    font-size: 35px;
-    margin-right: 10px;
-    > #Subtitle {
-      font-size: 13px;
-      word-spacing: 7px;
-      letter-spacing: 4px;
-    }
+    @extend %Title;
   }
   > #UrlSearch {
-    box-shadow: $card-box-shadow;
-    flex-grow: 1;
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
-    margin: 10px;
-    width: 80vw;
-    max-width: 1200px;
-    padding: 5px;
-    border-radius: 30px;
-    background: white;
-    #UrlInput {
-      flex-grow: 1;
-      font-size: 14.5px;
-      background: inherit;
-      text-align: center;
-      color: black;
-    }
-    #ReadModeToggle {
-      cursor: pointer;
-    }
-    .UrlSearch_feedback {
-      width: 40px;
-      font-size: 25px;
-      opacity: 1;
-      text-align: center;
-      &.disabled {
-        opacity: 0.2;
-      }
-    }
+    @extend %UrlSearch;
   }
-  > #AnalysisOutput {
-    flex-grow: 1;
-    margin: 10px;
-    align-self: stretch;
-    background: #111023;
-    color: whitesmoke;
+  > #NotificationBar {
+    @extend %NotificationBar;
   }
 }

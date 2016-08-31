@@ -6,9 +6,17 @@ import { isValidURL } from 'shared/validation'
 import { toggle } from 'shared/stream-utils'
 import { targetValue } from 'app/dom-utils'
 
+function renderUrlError () {
+  return [
+    i('.error .fa .fa-warning'),
+    div('.feedbacktip', [ div('.arrow-up'), 'The link is not of the expected format. Must be an URL.' ])
+  ]
+}
+
 function renderUrlValidation (url) {
-  if (url) return isValidURL(url) ? i('.success .fa .fa-check') : i('.error .fa .fa-warning')
-  else return i('.info.fa.fa-search')
+  return div(
+    url ? (isValidURL(url) ? [ i('.success .fa .fa-check') ] : renderUrlError()) : [ i('.info.fa.fa-search') ]
+  )
 }
 
 function renderReadModeToggle (readModeOn) {
@@ -28,6 +36,7 @@ function intent (DOM) {
 
 function model (sources) {
   const { selectedUrl$, isReadModeOn$ } = sources
+  // const isUrl$ = selectedUrl$.map(isValidURL)
   return xs
     .combine(selectedUrl$, isReadModeOn$)
     .map(([url, isReadModeOn]) => ({ url, isReadModeOn }))

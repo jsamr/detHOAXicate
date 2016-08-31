@@ -1,13 +1,15 @@
 import xs from 'xstream'
 import { div } from '@cycle/dom'
 import R from 'ramda'
-import { splitHttpScope } from 'app/http-utils'
+import isUrl from 'validator/lib/isURL'
+import truthy from 'lodash/identity'
 
+import { splitHttpScope } from 'app/http-utils'
 import Header from './Header'
 import Frame from './Frame'
 import TitleBar from './TitleBar'
 import SourcesPanel from './SourcesPanel'
-
+import { complement } from 'shared/stream-utils'
 const hasSucceedParsing = R.curry(R.prop)('parseSuccess')
 const getInnerHtml = R.curry(R.prop)('sanitizedArticleHtml')
 
@@ -20,12 +22,17 @@ function transform (sources) {
   const { parseUrlResponse$, parseUrlError$ } = splitHttpScope('parse', HTTP)
   const articleInnerHtml$ = parseUrlResponse$.compose(extractRootArticleInnherHtml)
   const header = Header({ DOM, parseUrlError$, parseUrlResponse$ })
-  const { selectedUrlSanitized$, parseUrlLoading$, isReadModeOn$ } = header
-  const canShowDiagram$ = xs.combine(parseUrlLoading$, parseUrlResponse$).map(([isLoading, articleRep]) => !isLoading && !!articleRep).startWith(false)
+  const { selectedUrl$, isReadModeOn$ } = header
+  const isInvalideUrl$ = selectedUrl$.map(isUrl).compose(complement).filter(truthy)
+  const canShowDiagram$ = xs.merge(
+    parseUrlResponse$.mapTo(true),
+    isInvalideUrl$.mapTo(false),
+    parseUrlError$.mapTo(false)
+  ).startWith(false)
   const titleBar = TitleBar({ DOM, parseUrlResponse$, canShowDiagram$ })
-  const sourcesPanel = SourcesPanel({ DOM, parseUrlResponse$, parseUrlLoading$, canShowDiagram$ })
+  const sourcesPanel = SourcesPanel({ DOM, parseUrlResponse$, canShowDiagram$ })
   const isPanelOpen$ = sourcesPanel.isPanelOpen$
-  const frame = Frame({ DOM, selectedUrl$: selectedUrlSanitized$, articleInnerHtml$, isReadModeOn$, parseUrlResponse$, isPanelOpen$ })
+  const frame = Frame({ DOM, selectedUrl$, articleInnerHtml$, isReadModeOn$, parseUrlResponse$, isPanelOpen$, canShowDiagram$ })
   return {
     headerVdom$: header.DOM,
     titleBarVdom$: titleBar.DOM,

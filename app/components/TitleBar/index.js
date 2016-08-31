@@ -1,12 +1,12 @@
 import { div } from '@cycle/dom'
 import isolate from '@cycle/isolate'
-
+import xs from 'xstream'
 // TODO: use canShowDiagram$ to expand / collapse
 
-function view (ans) {
-  const { metaInfo } = ans || {}
+function view ({ articleRep, canShow }) {
+  const { metaInfo } = articleRep || {}
   const { title } = metaInfo || {}
-  return div('#TitleBar', { attrs: { class: metaInfo ? 'is-expanded' : 'is-collapsed' } }, [
+  return div('#TitleBar', { attrs: { class: metaInfo && canShow ? 'is-expanded' : 'is-collapsed' } }, [
     div('.title', [
       title || '?[Title not found]'
     ])
@@ -14,9 +14,11 @@ function view (ans) {
 }
 
 function model (sources) {
-  const { parseUrlResponse$ } = sources
-  const metaInfoStream$ = parseUrlResponse$.filter((ans) => ans && ans.parseSuccess).startWith(null)
-  return metaInfoStream$
+  const { parseUrlResponse$, canShowDiagram$ } = sources
+  return xs.combine(
+    parseUrlResponse$.filter((ans) => ans && ans.parseSuccess).startWith(null),
+    canShowDiagram$
+  ).map(([articleRep, canShow]) => ({ articleRep, canShow }))
 }
 
 function TitleBar (sources) {

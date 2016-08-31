@@ -54,7 +54,7 @@
     @extend %ArticleInfos;
   }
   > #Article {
-    animation: fadein 1s;
+    animation: $fadein-transition;
     @extend %Article;
   }
 }

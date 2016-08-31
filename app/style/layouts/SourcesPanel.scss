@@ -3,6 +3,18 @@
 @import './SourcesView';
 @import '../modules/toggle';
 
+%Credits {
+  color: #b8b8b8;
+  font-family: monospace;
+  > * {
+    margin-left: 15px;
+  }
+  i {
+    padding-right: 10px;
+  }
+  transition: $fadein-transition;
+}
+
 %SourcesPanel_header {
   flex-shrink: 0;
   transition: $default-transitions;
@@ -53,6 +65,9 @@
   overflow: visible;
   background: $frame-bg;
   z-index: 10;
+  > #Credits {
+    @extend %Credits;
+  }
   > #SourcesView_container {
     overflow: auto;
     position: absolute;

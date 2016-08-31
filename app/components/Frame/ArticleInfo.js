@@ -34,7 +34,8 @@ function model (sources) {
 }
 
 function view ({ resp, isExpanded }) {
-  const { metaInfo, url } = resp
+  console.info('ARTICLE INFO RESP', resp)
+  const { metaInfo, url } = resp || {}
   const {
     authors,
     image,
@@ -74,7 +75,7 @@ function view ({ resp, isExpanded }) {
 function ArticleInfo (sources) {
   const intents = intent(sources.DOM)
   const $state = model({ ...sources, ...intents })
-  const vdom$ = $state.map(view).startWith(null)
+  const vdom$ = $state.map(view)
   return {
     DOM: vdom$
   }
