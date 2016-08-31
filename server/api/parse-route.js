@@ -1,6 +1,11 @@
 import isUrl from 'validator/lib/isURL'
 import { parseUrl } from '../parser'
 
+function sendError (res, status, message) {
+  res.setHeader('Content-Type', 'text/plain')
+  res.status(status).send(message)
+}
+
 // Could use https://github.com/ctavan/express-validator
 function parseRoute (req, res) {
   if (req.is('application/json')) {
@@ -14,14 +19,14 @@ function parseRoute (req, res) {
           })
           .catch((err) => {
             console.error(err)
-            res.status(500).send(`Server error: ${err.message}`)
+            sendError(res, 500, `Server error: ${err.message}`)
           })
-      } else res.status(422).send('Wrong DEPTH parameter. Must be an integer.')
+      } else sendError(res, 422, 'Wrong DEPTH parameter. Must be an integer.')
     } else {
-      res.status(422).send('Wrong URL format.')
+      sendError(res, 422, 'Wrong URL format.')
     }
   } else {
-    res.status(406).send()
+    sendError(res, 400, 'Bad Content-Type')
   }
 }
 

@@ -230,8 +230,13 @@ _The body is a single **ArticleRepresentation** object, see below_
 *Not yet specified, falls back to an empty object `{}`*
 
 #### Errors
+All http errors have a 4XX, 5XX status code and a `Content-Type: text/plain` formatted body.
 
-*To be described*
+| status | description |
+| ------ | ----------- |
+| 500 |  Internal server error |
+| 422 |  Wrong parameter |
+| 406 |  Wrong request body format |
 
 ## Miscellaneous useful tools list
  
