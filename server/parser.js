@@ -1,5 +1,5 @@
 import R from 'ramda'
-import isUrl from 'validator/lib/isURL'
+import { isValidURL } from '../shared/validation'
 import jsdom from 'jsdom'
 import merge from 'lodash/merge'
 import Promise from 'bluebird'
@@ -13,7 +13,7 @@ function extractHref (tag) {
 }
 
 function isNodeHrefUrl (node) {
-  return typeof node.href === 'string' && isUrl(node.href)
+  return isValidURL(node.href)
 }
 
 function retrieveErrorCode (error) {

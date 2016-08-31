@@ -5,6 +5,8 @@ import isolate from '@cycle/isolate'
 import { isValidURL } from 'shared/validation'
 import { toggle } from 'shared/stream-utils'
 import { targetValue } from 'app/dom-utils'
+const httpRegex = /^http[s]?:\/\//
+const httpRegexExact = /^http[s]?:\/\/$/
 
 function renderUrlError () {
   return [
@@ -15,7 +17,7 @@ function renderUrlError () {
 
 function renderUrlValidation (url) {
   return div(
-    url ? (isValidURL(url) ? [ i('.success .fa .fa-check') ] : renderUrlError()) : [ i('.info.fa.fa-search') ]
+    url && !httpRegexExact.test(url) ? ((isValidURL(url)) ? [ i('.success .fa .fa-check') ] : renderUrlError()) : [ i('.info.fa.fa-search') ]
   )
 }
 
@@ -23,8 +25,12 @@ function renderReadModeToggle (readModeOn) {
   return div('#ReadModeToggle', { attrs: { class: `UrlSearch_feedback ${readModeOn ? '' : 'disabled'}` } }, [ i('.icon-book-open') ])
 }
 
+function sanitizeUrl (url) {
+  return httpRegex.test(url) ? url : 'http://' + url
+}
+
 function intent (DOM) {
-  const selectedUrl$ = DOM.select('#UrlInput').events('input').map(targetValue).startWith('')
+  const selectedUrl$ = DOM.select('#UrlInput').events('input').map(targetValue).startWith('').map(sanitizeUrl)
   const isReadModeOn$ = DOM.select('#ReadModeToggle').events('click').compose(toggle(true))
   const selectedUrlSanitized$ = selectedUrl$.filter(isValidURL).startWith(null)
   return {
@@ -36,16 +42,22 @@ function intent (DOM) {
 
 function model (sources) {
   const { selectedUrl$, isReadModeOn$ } = sources
-  // const isUrl$ = selectedUrl$.map(isValidURL)
   return xs
     .combine(selectedUrl$, isReadModeOn$)
     .map(([url, isReadModeOn]) => ({ url, isReadModeOn }))
 }
 
 function view ({ url, isReadModeOn }) {
+  // display an url which protocol (http:// or https://) has been stripped off
+  const protocolLessUrl = url.replace(httpRegex, '')
   return div('#UrlSearch', [
     div('#UrlFeedback', { attrs: { class: 'UrlSearch_feedback' } }, [ renderUrlValidation(url) ]),
-    input('#UrlInput', { attrs: { type: 'text', value: url, autofocus: true, placeholder: 'Type a link to generate a source diagram from' } }),
+    input('#UrlInput', {
+      hook: { update: (vdom) => {
+        vdom.elm.value = protocolLessUrl
+      }},
+      attrs: { type: 'text', value: protocolLessUrl, autofocus: true, placeholder: 'Type a link to generate a source diagram from' }
+    }),
     renderReadModeToggle(isReadModeOn)
   ])
 }

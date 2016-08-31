@@ -1,7 +1,7 @@
 import xs from 'xstream'
 import { div } from '@cycle/dom'
 import R from 'ramda'
-import isUrl from 'validator/lib/isURL'
+import { isValidURL } from 'shared/validation'
 import truthy from 'lodash/identity'
 
 import { splitHttpScope } from 'app/http-utils'
@@ -27,7 +27,7 @@ function transform (sources) {
   const articleInnerHtml$ = parseUrlResponse$.compose(extractRootArticleInnherHtml)
   const header = Header({ DOM, parseUrlError$, parseUrlResponse$ })
   const { selectedUrl$, isReadModeOn$ } = header
-  const isInvalideUrl$ = selectedUrl$.map(isUrl).compose(complement).filter(truthy)
+  const isInvalideUrl$ = selectedUrl$.map(isValidURL).compose(complement).filter(truthy)
   const canShowDiagram$ = xs.merge(
     parseUrlResponse$.mapTo(true),
     isInvalideUrl$.mapTo(false),

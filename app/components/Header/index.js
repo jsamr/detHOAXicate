@@ -1,5 +1,6 @@
 import { div } from '@cycle/dom'
 import xs from 'xstream'
+import debounce from 'xstream/extra/debounce'
 
 import Parse from 'app/api/Parse'
 import NumberPicker from '../../generics/NumberPicker'
@@ -8,13 +9,15 @@ import Title from './Title'
 import UrlSearch from './UrlSearch'
 import NotificationBar from './NotificationBar'
 
+const DEBOUNCE_REQUEST_MS = 500
+
 function transform (sources) {
   const { parseUrlError$, parseUrlResponse$, DOM } = sources
   const urlSearch = UrlSearch({ DOM })
   const { selectedUrlSanitized$, selectedUrl$, isReadModeOn$ } = urlSearch
   const depthPicker = NumberPicker({ DOM }, 'DepthPicker', { legend: 'depth', min: 0, max: 6 })
   const depth$ = depthPicker.number$
-  const parseUrlReq$ = Parse({ url$: selectedUrlSanitized$, depth$ }).HTTP
+  const parseUrlReq$ = Parse({ url$: selectedUrlSanitized$.compose(debounce(DEBOUNCE_REQUEST_MS)), depth$ }).HTTP
   const errorFlow$ = xs.merge(parseUrlError$, parseUrlResponse$.mapTo(null), parseUrlReq$.mapTo(null), selectedUrl$.mapTo(null))
   const notificationBarVdom$ = NotificationBar({ DOM, errorFlow$ }).DOM
   const parseUrlLoading$ = xs.merge(

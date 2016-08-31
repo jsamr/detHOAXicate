@@ -1,4 +1,4 @@
-import isUrl from 'validator/lib/isURL'
+import { isValidURL } from '../../shared/validation'
 import { parseUrl } from '../parser'
 
 function sendError (res, status, message) {
@@ -10,7 +10,7 @@ function sendError (res, status, message) {
 function parseRoute (req, res) {
   if (req.is('application/json')) {
     const { url, depth } = req.body
-    if (typeof url === 'string' && isUrl(url)) {
+    if (typeof url === 'string' && isValidURL(url)) {
       if (typeof depth === 'number' || depth == null) {
         parseUrl(url, depth)
           .then((links) => {

@@ -1,6 +1,6 @@
 import R from 'ramda'
 import { queryAll } from './dom-utils'
-import isUrl from 'validator/lib/isURL'
+import { isValidURL } from '../../shared/validation'
 import isIso8601 from 'validator/lib/isISO8601'
 
 function composeStringValidator (validator) {
@@ -133,7 +133,7 @@ const META_FIELDS_DESCRIPTORS = {
   provider: {},
   genre: {},
   image: {
-    validate: composeStringValidator(isUrl)
+    validate: composeStringValidator(isValidURL)
   },
   ogType: {},
   section: {},
