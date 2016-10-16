@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+</style>
+
+<!--
+PROCESS :
+1 - Prendre la main sur SVG : tracer un cercle, une ligne, relier des cercles, ...
+2 - Définir les formules mathématiques associées
+3 - Automatiser le svg avec d3.js
+4 - Soupoudre le tout de CycleJS
+5 - Se rendre compte que l'on a pas respecter la demande du GitHub
+6 - Recommencer à l'étape 1
+
+
+EXEMPLE JULES
+lien : http://www.bbc.com/news/world-europe-37147717
+image source : http://ichef.bbci.co.uk/news/1024/cpsprodpb/1314C/production/_90865187_mediaitem90865186.jpg
+image candidat 1 : http://cdn.haberiyakala.com/assets/uploads/images/content/2016/08/21/cropped_content_erdogan-gaziantepte-oynanan-oyun-tutmayacak_UP27kbH9gBvr3jZ.jpg
+image candidat 2 : http://www.dha.com.tr/newpics/news/210820160818149365751_2.jpg
+
+
+
+-->
+<div>
+    <br /><br />
+</div>
+<div style="margin-left:200px">
+    <svg width="1000" height="500">
+        <defs>
+            <!-- Le height et width doivent etre identique et de 2x le rayon du cercle, sinon l'image est dupliquée -->
+            <!-- x représente le début de l'image sur le cercle et doit correspondre à "circle_x (cx) - circle r (r)" -->
+            <!-- meme principe pour y : "cy - r" -->
+            <!--
+            cy : nombre de pixels entre l'ordonnée y et le haut du cercle
+            cx : nombre de pixels entre l'absisse x et la coté gauche du cercle
+            cr : rayon du cercle
+
+            piy (pattern image y) : nombre de pixels entre l'ordonnée y et le haut de l'image
+            pix (pattern image x) : nombre de pixels entre l'absisse x et la coté gauche du cercle
+            piw (pattern image width) : nombre de
+            -->
+            <!-- Si x > y : "y_img = cy - r + (r*2)*(y/x) - y" -->
+            <!-- Si y > x : "y_img = cy - r + (r*2)*(x/y)" -->
+            <pattern id="image2" patternUnits="userSpaceOnUse" height="150" width="150" x="125" y="25">
+                <!-- width et height définissent la taille finale de l'image -->
+                <!-- x et y définissent le positionnement de l'image -->
+                <image x="0" y="0" height="100" width="150" xlink:href="chien-croise-basset-fauve-de-bretagne.jpg"></image>
+            </pattern>
+        </defs>
+        <circle cx="200" cy="75" r="75" fill="url(#image2)"></circle>
+    </svg>
+</div>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script>
+/*
+    var svg = d3.select("svg");
+
+    var circle = svg.selectAll("circle")
+            .data([32, 57, 112, 5500]);
+
+    var circleEnter = circle.enter().append("circle");
+    circleEnter.attr("cy", 60);
+    circleEnter.attr("cx", function(d, i) { return i * 100 + 30; });
+    circleEnter.attr("r", function(d) { return Math.sqrt(d); });
+*/
+</script>
