@@ -40,9 +40,17 @@ Try `sudo npm run init` instead if errors pop up.
 <a name='running'></a>
 ### Running
 
+#### Basic
 ```
 npm start
 ```
+
+#### From specific root
+
+```
+npm start -- --component=SourcesView
+```
+with `SourcesView` an example of a possible root component. Those are defined in `app/isolated`
 
 ### Testing
 

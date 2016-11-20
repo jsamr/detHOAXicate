@@ -1,0 +1,75 @@
+{
+  "url": "http://www.bbc.com/news/world-europe-37147717",
+  "parseSuccess": true,
+  "errorCode": null,
+  "metaInfo": {
+    "title": "Turkey wedding suicide bomber 'was child aged 12-14' - BBC News",
+    "description": "The suicide bomber who killed 51 at a Kurdish wedding in Turkey was 12 to 14 years old and was working for so-called Islamic State, President Recep Tayyip Erdogan says.",
+    "authors": [
+      "BBC News"
+    ],
+    "provider": "BBC News",
+    "image": "http://ichef-1.bbci.co.uk/news/1024/cpsprodpb/1314C/production/_90865187_mediaitem90865186.jpg",
+    "ogType": "article",
+    "section": "Europe"
+  },
+  "standardsCompliance": {},
+  "socialLinks": [
+    "http://twitter.com/BBC_HaveYourSay"
+  ],
+  "internalArticleCandidates": [
+    "http://www.bbc.co.uk/news/world-europe-36181138",
+    "http://www.bbc.co.uk/news/world-middle-east-37143499",
+    "http://www.bbc.co.uk/news/live/world-europe-36659543",
+    "http://www.bbc.co.uk/news/world-europe-35829231",
+    "http://www.bbc.co.uk/news/world-europe-35599323",
+    "http://www.bbc.co.uk/news/world-europe-35290760",
+    "http://www.bbc.co.uk/news/world-europe-34495161"
+  ],
+  "sourcesCandidates": [
+    {
+      "url": "http://www.haberiyakala.com/2016-08-21-erdogan-gaziantepte-oynanan-oyun-tutmayacak-h269658.haber",
+      "parseSuccess": true,
+      "errorCode": null,
+      "metaInfo": {
+        "title": "Erdoğan: Gaziantep'te oynanan oyun tutmayacak",
+        "description": "Erdoğan: Gaziantep'te oynanan oyun tutmayacak",
+        "provider": "Haberi Yakala",
+        "image": "http://cdn.haberiyakala.com/assets/uploads/images/content/2016/08/21/cropped_content_erdogan-gaziantepte-oynanan-oyun-tutmayacak_UP27kbH9gBvr3jZ.jpg"
+      },
+      "standardsCompliance": {},
+      "socialLinks": [],
+      "internalArticleCandidates": [],
+      "sourcesCandidates": []
+    },
+    {
+      "url": "http://www.dha.com.tr/gaziantepte-patlama_1309851.html",
+      "parseSuccess": true,
+      "errorCode": null,
+      "metaInfo": {
+        "title": "Gaziantep'te terör saldırısı",
+        "description": "GAZİANTEP'te dün gece kına gecesinin yapıldığı sokağa terör saldırısı düzenlendi. Cumhurbaşkanı Erdoğan, ",
+        "provider": "Dha.com.tr",
+        "genre": "news",
+        "image": "http://www.dha.com.tr/newpics/news/210820160818149365751_2.jpg",
+        "ogType": "article",
+        "section": "Politika",
+        "location": "Istanbul, Turkey, Türkiye"
+      },
+      "standardsCompliance": {},
+      "socialLinks": [],
+      "internalArticleCandidates": [],
+      "sourcesCandidates": []
+    },
+    {
+      "url": "http://upload.news.bbc.cs.streamuk.com/",
+      "parseSuccess": false,
+      "errorCode": "UNKNOWN",
+      "sourcesCandidates": null,
+      "metaInfo": {},
+      "standardsCompliance": {},
+      "socialLinks": [],
+      "internalArticleCandidates": []
+    }
+  ]
+}
