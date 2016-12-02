@@ -2,11 +2,11 @@ import path from 'path'
 import webpack from 'webpack'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 
-const appConfig = {
+const getAppConfig = (rootComponentName) => ({
   devtool: 'cheap-source-map',
   entry: [
     'webpack-hot-middleware/client?reload=true',
-    path.join(__dirname, 'app/main.js')
+    path.join(__dirname,'app/main.js')
   ],
   output: {
     path: path.join(__dirname, '/dist/'),
@@ -23,7 +23,8 @@ const appConfig = {
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('development')
+      'process.env.NODE_ENV': JSON.stringify('development'),
+      'process.env.APPLICATION_ROOT_COMP': JSON.stringify(rootComponentName)
     })
   ],
   resolve: {
@@ -49,6 +50,6 @@ const appConfig = {
     }
     ]
   }
-}
+})
 
-module.exports = appConfig
+module.exports = getAppConfig

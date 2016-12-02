@@ -3,14 +3,22 @@ import express from 'express'
 import webpack from 'webpack'
 import webpackMiddleware from 'webpack-dev-middleware'
 import webpackHotMiddleware from 'webpack-hot-middleware'
-import config from '../webpack.config'
+import getAppConfig from '../webpack.config'
 import articleConfig from '../webpack.article.config'
-
+import { argv } from 'yargs'
 import initRoutes from './init-routes'
 import initSecurity from './init-security'
 
 const isDeveloping = process.env.NODE_ENV !== 'production'
 const app = express()
+
+function getApplicationRoot () {
+  let approot = null
+  if (argv.component || argv.c) {
+    approot = argv.component || argv.c
+  }
+  return approot
+}
 
 function useConfig (config) {
   const compiler = webpack(config)
@@ -31,7 +39,7 @@ function useConfig (config) {
 }
 
 if (isDeveloping) {
-  const middleware = useConfig(config)
+  const middleware = useConfig(getAppConfig(getApplicationRoot()))
   useConfig(articleConfig)
   app.get('/', function response (req, res) {
     res.write(middleware.fileSystem.readFileSync(path.join(__dirname, 'dist/index.html')))
