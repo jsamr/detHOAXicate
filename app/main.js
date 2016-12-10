@@ -10,7 +10,8 @@ import './style/main.scss'
  *
  * @param componentName - The component that should start at the root of the app
  */
-function main (componentName = 'Root') {
+function main (componentName) {
+  if (!componentName) throw new Error('component root must be specified')
   const normalizedCompName = componentName.toLowerCase()
   let component = rootMap[normalizedCompName]
   if (!component) {
