@@ -13,7 +13,7 @@ const isDeveloping = process.env.NODE_ENV !== 'production'
 const app = express()
 
 function getApplicationRoot () {
-  let approot = null
+  let approot = 'Root'
   if (argv.component || argv.c) {
     approot = argv.component || argv.c
   }
