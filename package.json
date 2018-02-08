@@ -34,6 +34,7 @@
     "@cycle/isolate": "^1.4.0",
     "@cycle/xstream-run": "^3.1.0",
     "babel-polyfill": "^6.13.0",
+    "babel-preset-react-hmre": "^1.1.1",
     "bluebird": "^3.4.1",
     "body-parser": "^1.15.2",
     "cors": "^2.8.0",
@@ -44,7 +45,7 @@
     "normalize.css": "^4.2.0",
     "parse-domain": "^0.2.1",
     "ramda": "^0.22.1",
-    "readability": "file:./node_local_modules/readability/",
+    "readability": "git://github.com/mozilla/readability#264b8e8968dc0299d9b18d261a13d00d15baa040",
     "validator": "^5.5.0",
     "xstream": "^6.1.0",
     "yargs": "^6.4.0"
