@@ -3,6 +3,19 @@
 [![JavaScript Style Guide](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 [![CircleCI](https://circleci.com/gh/sveinburne/detHOAXicate/tree/master.svg?style=shield)](https://circleci.com/gh/sveinburne/detHOAXicate/tree/master)
 
+## Screenshot
+
+Here is what the application looks like (still a prototype though) :
+
+### Welcome page
+![](./misc/dethoaxicate_welcome.png)
+
+### URL parsed + read mode
+![](./misc/dethoaxicate_url_readmode.png)
+
+### URL parsed + iframe (embedded) mode
+![](./misc/dethoaxicate_url_frammode.png)
+
 ## Compliance
 
 Those are *standards* this application should tend to comply with
